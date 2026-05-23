@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /home/user/mypipeline-demo/hooks/claude/rtk-rewrite.sh",
+            "timeout": 5,
+            "statusMessage": "RTK: optimisation des tokens..."
+          }
+        ]
+      }
+    ]
+  }
+}
