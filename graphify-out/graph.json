@@ -1,0 +1,47 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "run.sh",
+      "file_type": "code",
+      "source_file": "run.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "id": "run",
+      "community": 0,
+      "norm_label": "run.sh"
+    },
+    {
+      "label": "run.sh script",
+      "file_type": "code",
+      "source_file": "run.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "id": "home_user_mypipeline_demo_run_sh__entry",
+      "community": 0,
+      "norm_label": "run.sh script"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "run.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "run",
+      "target": "home_user_mypipeline_demo_run_sh__entry",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "6b01c5d3380e258d0f7dd7f38ca0fbe9e59bd8ac"
+}
