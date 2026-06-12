@@ -1,0 +1,15 @@
+{
+  "name": "mypipeline-demo",
+  "version": "1.0.0",
+  "description": "Awesome list demo with CI/CD pipeline",
+  "scripts": {
+    "lint": "awesome-lint",
+    "test": "awesome-lint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "awesome-lint": "^2.3.0"
+  }
+}
