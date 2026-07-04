@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "source": "agent-native",
+  "appSkillId": "assets",
+  "displayName": "Assets",
+  "skillName": "assets",
+  "contentHash": "0e9c4302e2b4b072",
+  "mcpUrl": "https://assets.agent-native.com/_agent-native/mcp",
+  "installedAt": "2026-07-04T15:30:46.135Z",
+  "installCommand": "npx @agent-native/core@latest skills add assets",
+  "updateCommand": "npx @agent-native/core@latest skills update assets"
+}
