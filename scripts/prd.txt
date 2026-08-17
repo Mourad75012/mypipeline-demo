@@ -1,0 +1,200 @@
+<context>
+# Overview
+A multi-vendor e-commerce marketplace ("Amazon-like"): a single storefront where many
+independent sellers list products, and buyers search, compare, purchase, and track orders
+through one cart and one checkout. The platform takes a commission on each sale.
+
+The problem it solves is two-sided:
+- Buyers want one trusted place with wide selection, reliable search, honest reviews,
+  predictable delivery, and painless returns.
+- Sellers want distribution without building their own storefront, payments, or logistics.
+
+The value is the marketplace flywheel: more sellers means more selection, which brings more
+buyers, which attracts more sellers. The platform's job is to make each side's onboarding
+cheap and to be the trusted intermediary holding payments, ratings, and dispute resolution.
+
+This is deliberately NOT a single-merchant shop. Multi-vendor is the defining constraint and
+it shapes the data model, the checkout (one order can span several sellers), the money flow
+(split payments and payouts), and the operational surface (seller support, moderation, fraud).
+
+# Core Features
+
+## Buyer experience
+- Catalog browsing by category with faceted filters (price, brand, rating, availability).
+- Search: keyword matching, typo tolerance, autocomplete, relevance ranking, sorting.
+- Product detail: images, variants (size/color), price, seller identity, delivery estimate,
+  stock state, reviews, Q&A.
+- Cart and saved items: persistent across sessions and devices, multi-seller aware.
+- Checkout: address book, delivery options, payment, order review, confirmation.
+- Order management: status tracking, invoices, cancellation, returns and refunds.
+- Accounts: registration, login, password reset, addresses, payment methods, preferences.
+
+## Seller experience
+- Seller onboarding: business identity, tax details, bank account, KYC verification.
+- Listing management: create/edit products, variants, images, pricing, stock levels.
+- Bulk operations: CSV import and export for catalogs of meaningful size.
+- Order fulfillment: view incoming orders, mark shipped, provide tracking numbers.
+- Finance: commission statements, payout schedule, transaction history, refund impact.
+- Performance: sales metrics, conversion, late-shipment rate, buyer feedback.
+
+## Platform / operator experience
+- Category taxonomy and attribute schema management.
+- Content moderation: listing approval, prohibited-item enforcement, review moderation.
+- Dispute resolution: buyer-seller conflict, refund arbitration, chargeback response.
+- Fraud controls: velocity limits, risk scoring, manual review queue.
+- Business analytics: GMV, take rate, cohort retention, category performance.
+
+# User Experience
+
+## Personas
+- Casual buyer: arrives from search engine or ad, wants one specific item, low tolerance for
+  friction, likely guest checkout.
+- Repeat buyer: has an account, saved payment method and address, buys across categories,
+  cares about delivery reliability and returns.
+- Small seller: a handful of SKUs, manages listings by hand in the web UI, needs the flow to
+  be obvious with no training.
+- Professional seller: hundreds to thousands of SKUs, needs bulk import and eventually API
+  access, cares about payout timing and inventory sync with external systems.
+- Operations staff: works moderation and dispute queues all day, needs speed and bulk actions.
+
+## Key flows
+1. Discover -> product detail -> add to cart -> checkout -> pay -> confirmation.
+2. Order placed -> seller notified -> seller ships -> buyer tracks -> delivered -> review.
+3. Seller signs up -> KYC -> first listing published -> first sale -> first payout.
+4. Buyer requests return -> seller or operator approves -> item returns -> refund issued.
+
+## UX considerations
+- Search box is the primary navigation for a large catalog; it must be fast and forgiving.
+- Time to first meaningful paint on product and listing pages drives conversion directly.
+- Trust signals (seller rating, review count, return policy, delivery date) must be visible
+  at the decision point, not buried on a secondary page.
+- Mobile-first responsive layout. Most traffic will be mobile.
+- Checkout must never lose cart state on error, timeout, or authentication redirect.
+- Accessibility (WCAG 2.1 AA) is a requirement of the base components, not a later retrofit.
+</context>
+<PRD>
+# Technical Architecture
+
+## System components
+- Web storefront: server-rendered React (Next.js) for SEO-critical catalog and product pages,
+  client-side interactivity for cart, filters, and checkout.
+- Seller portal: authenticated SPA sharing the design system with the storefront.
+- Admin back-office: internal-only application for moderation, disputes, and taxonomy.
+- API layer: REST or GraphQL service, stateless, horizontally scalable behind a load balancer.
+- Search service: OpenSearch/Elasticsearch cluster, fed asynchronously from catalog changes.
+- Async workers: queue consumers for email, search indexing, payout batches, image processing.
+- Object storage plus CDN for product images and static assets.
+
+## Data models (core entities)
+- User (buyer identity, credentials, addresses, payment method tokens)
+- Seller (business entity, KYC status, bank details, commission plan, rating)
+- Product / Variant / Offer (a product may carry several sellers' offers; the variant holds
+  the sellable attributes; the offer holds seller, price, stock, condition, shipping)
+- Category and Attribute schema (per-category attribute definitions and validation)
+- Inventory (stock per offer, with reservation semantics during checkout)
+- Cart and CartItem
+- Order, OrderLine, Shipment (an order splits into per-seller sub-orders and shipments)
+- Payment, Refund, Payout, LedgerEntry (double-entry ledger for money movement)
+- Review, Rating, ReturnRequest, Dispute
+
+## Integrations
+- Payment service provider with marketplace/split-payment support (Stripe Connect or
+  equivalent) so the platform never takes custody of funds it is not licensed to hold.
+- Transactional email and SMS provider.
+- Tax calculation service (VAT/sales tax varies by jurisdiction and by product category).
+- Shipping carrier APIs for rates, labels, and tracking.
+- KYC/AML verification provider for seller onboarding.
+
+## Infrastructure
+- Postgres primary with read replicas; Redis for sessions, cart, and rate limiting.
+- Message queue (SQS/RabbitMQ/Kafka) for async work and event fan-out.
+- CI/CD extending the existing Jenkins pipeline: build, test, security scan, deploy to
+  staging on merge, deploy to production on tag.
+- Observability: structured logs, metrics, distributed tracing, error tracking, uptime alerts.
+- Environments: local, staging with anonymized data, production.
+
+## Non-functional requirements
+- p95 page load under 2s for catalog and product pages on mobile.
+- 99.9% availability target for the buyer-facing critical path.
+- PCI DSS scope minimized by tokenizing card data with the PSP; no raw PAN ever touches
+  platform servers or logs.
+- GDPR: data export and erasure, explicit consent capture, documented retention windows.
+- Full audit trail on every money movement and every seller/admin state change.
+
+# Development Roadmap
+
+## Phase 0 — Foundation
+Repository structure, environments, CI/CD, database schema and migrations, authentication,
+design system primitives, observability baseline. Nothing user-visible ships without this.
+
+## Phase 1 — MVP: the buyer's money path
+The narrowest slice that lets a real buyer give the platform real money for a real product
+from a real seller. Seed the catalog manually if needed. Includes: catalog browse, product
+detail, cart, checkout, payment, order confirmation, buyer order history. A single seller
+onboarded by hand is acceptable here — the seller portal is not yet required.
+
+## Phase 2 — Multi-vendor
+What makes it a marketplace rather than a shop: seller self-onboarding with KYC, seller
+listing management, inventory, per-seller order splitting and fulfillment, commission
+calculation, and payouts. At the end of this phase sellers operate without platform staff.
+
+## Phase 3 — Trust and scale
+Reviews and ratings, real search relevance with facets and autocomplete, returns and refunds,
+admin moderation tooling, fraud controls, notification infrastructure, performance and
+caching work, security hardening.
+
+## Phase 4 — Growth
+Recommendations, promotions and coupons, wishlists, product Q&A, seller API and bulk import,
+internationalization and multi-currency, advanced analytics, mobile app or PWA.
+
+# Logical Dependency Chain
+
+The ordering principle is: retire the highest risk first, then make revenue possible, then
+make revenue repeatable, then make revenue grow.
+
+1. Foundation before anything (schema, auth, CI, deploy). Everything depends on it.
+2. Payments prototyped early, even before the polished checkout UI. Payment provider approval,
+   marketplace account structure, and split-payment mechanics are the longest-lead external
+   dependency and the one most likely to invalidate assumptions. Discover that in Phase 1.
+3. Catalog read path before catalog write path. Buyers browsing a manually seeded catalog is a
+   usable, demoable product; a seller portal with no buyers is not.
+4. Cart -> checkout -> order -> confirmation as one continuous slice. A partial checkout has
+   zero value; this is the atomic unit of the MVP.
+5. Seller onboarding after the buyer path works end to end, because seller value is entirely
+   derived from buyer demand existing.
+6. Search relevance after basic search. Naive SQL keyword matching is adequate up to roughly
+   ten thousand SKUs and defers a whole infrastructure component.
+7. Returns after orders exist. Reviews after deliveries exist. Recommendations after enough
+   behavioral data exists to make them non-embarrassing.
+8. Performance and caching work last within each phase, driven by measurements from real
+   traffic rather than speculation.
+
+# Risks and Mitigations
+
+- Payment provider onboarding for marketplaces requires business verification and can take
+  weeks. Mitigation: start the application in week one, in parallel with Phase 0 engineering.
+- Multi-seller checkout is deceptively complex: one payment, several sellers, partial
+  shipments, partial refunds. Mitigation: model the ledger as double-entry from day one.
+  Retrofitting correct money accounting later is significantly harder than starting with it.
+- Cold start with no sellers and no buyers. Mitigation: hand-recruit a small set of sellers in
+  one focused category; a narrow catalog that is deep beats a broad one that is thin.
+- Search quality is the single biggest driver of conversion in a large catalog and is easy to
+  underestimate. Mitigation: treat relevance as an ongoing product workstream with measured
+  click-through and conversion, not a one-off ticket.
+- Fraud arrives the moment payments work. Mitigation: velocity limits and a manual review
+  queue in Phase 3, before opening seller self-signup to the public.
+- Scope creep toward feature parity with Amazon. Mitigation: the phase boundaries above are
+  commitments. Anything not on the money path in Phase 1 is deferred.
+
+# Appendix
+
+## Success metrics
+- Phase 1: one end-to-end paid order in production, settled correctly.
+- Phase 2: a seller onboards, lists, sells, and gets paid with zero platform staff involvement.
+- Phase 3: return-to-refund cycle under 5 business days; search zero-result rate under 5%.
+- Ongoing: GMV, take rate, buyer repeat rate at 90 days, seller 90-day retention.
+
+## Explicitly out of scope for this roadmap
+Owned logistics and warehousing, a Prime-style subscription, third-party advertising, and
+first-party retail (the platform sells nothing itself). Each is a separate product.
+</PRD>

@@ -1,0 +1,479 @@
+{
+  "meta": {
+    "projectName": "mypipeline-demo — Multi-Vendor Marketplace",
+    "version": "0.1.0",
+    "source": "scripts/prd.txt",
+    "description": "Prioritized backlog for building an Amazon-like multi-vendor merchant site. Ordered by dependency chain and risk retirement: foundation, then the buyer money path, then multi-vendor, then trust and scale, then growth.",
+    "prioritizationModel": "P0/P1 = 'high' (must ship to reach the next phase gate), P2 = 'medium' (needed before public launch or scale), P3 = 'low' (growth work, deferrable without blocking revenue). Within a priority, the dependency graph decides order — use `node scripts/dev.js next`.",
+    "phaseGates": {
+      "phase0": "Tasks 1-7 — Foundation. Gate: a commit deploys to staging automatically and a user can register and log in.",
+      "phase1": "Tasks 8-21 — MVP buyer money path. Gate: one real buyer pays real money for a real product and the money settles correctly.",
+      "phase2": "Tasks 22-29 — Multi-vendor. Gate: a seller onboards, lists, sells and gets paid with zero platform staff involvement.",
+      "phase3": "Tasks 30-38 — Trust and scale. Gate: safe to open public seller signup and spend money on acquisition.",
+      "phase4": "Tasks 39-46 — Growth. No gate; sequenced by measured impact."
+    },
+    "sizing": "S = up to 3 days, M = 1-2 weeks, L = 2-4 weeks, XL = over 4 weeks and should be split before starting."
+  },
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Application scaffolding and shared tooling",
+      "description": "Stand up the repository structure, language tooling, and local development environment that every later task builds on: Next.js storefront, API service, shared TypeScript types, linting, formatting, and the test harness.",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "details": "Phase 0 | Size: M | P0\n\nWhy first: every other task writes code into this structure. Changing it later means touching every file.\n\nScope:\n- Monorepo layout (storefront, api, seller-portal, admin, shared packages)\n- TypeScript strict mode, ESLint, Prettier, editorconfig, commit hooks\n- Test harness: unit (Vitest/Jest), integration, and one end-to-end smoke test\n- Local development via docker-compose: app, Postgres, Redis\n- .env.example documenting every required variable, with no real secrets committed\n- README covering clone-to-running-locally in under ten minutes\n\nOut of scope: any user-facing feature.",
+      "testStrategy": "A fresh clone reaches a running local stack with a single documented command. Lint, typecheck, and the test suite all pass on a clean checkout. The end-to-end smoke test loads the home page and asserts a 200."
+    },
+    {
+      "id": 2,
+      "title": "Core database schema and migrations",
+      "description": "Design and implement the relational schema for the core marketplace entities, with a reversible migration tool and seed data for local development.",
+      "status": "pending",
+      "dependencies": [1],
+      "priority": "high",
+      "details": "Phase 0 | Size: L | P0\n\nWhy this priority: schema mistakes are the most expensive class of mistake in this project. In particular the money model must be double-entry from the first migration — retrofitting correct accounting onto a marketplace that already moved real money is a multi-month remediation.\n\nScope:\n- Entities: User, Seller, Product, Variant, Offer, Category, Attribute, Inventory, Cart, CartItem, Order, OrderLine, Shipment, Payment, Refund, Payout, LedgerEntry, Review, ReturnRequest\n- Money stored as integer minor units with an explicit currency column. Never floats.\n- LedgerEntry designed as append-only double-entry; balances are derived, never stored mutable\n- Every table has created_at, updated_at, and soft-delete where regulation requires retention\n- Foreign keys and indexes on every access path the API will actually use\n- Migration tooling (Prisma/Knex/Flyway) with tested up and down paths\n- Seed script producing a realistic development dataset\n\nDecision to make explicitly and record: the Product/Variant/Offer split, where several sellers attach competing Offers to one shared Variant. This is what makes a marketplace catalog rather than a set of independent shops.",
+      "testStrategy": "Migrations apply cleanly to an empty database and roll back without data loss on a populated one. Seed data loads. Constraint tests assert that a negative stock level, an orphan order line, and an unbalanced ledger transaction are all rejected by the database itself, not merely by application code."
+    },
+    {
+      "id": 3,
+      "title": "CI/CD pipeline and environments",
+      "description": "Extend the existing Jenkins pipeline into a real delivery pipeline: build, lint, test, security scan, deploy to staging on merge, deploy to production on tag, with a documented rollback.",
+      "status": "pending",
+      "dependencies": [1],
+      "priority": "high",
+      "details": "Phase 0 | Size: M | P0\n\nWhy early: the current Jenkinsfile only echoes and runs run.sh. Until deployment is automated, every later task pays a manual release tax and staging drifts from production.\n\nScope:\n- Pipeline stages: checkout, install, lint, typecheck, unit tests, integration tests, build, dependency vulnerability scan, container image publish, deploy\n- Environments: local, staging (anonymized data), production, with per-environment secret management outside the repository\n- Database migrations run as an explicit, gated pipeline step, never implicitly on application boot\n- Rollback procedure documented and rehearsed at least once\n- Branch protection: no merge to the default branch without a green pipeline\n\nDepends on task 1 only for the scripts it invokes; can start in parallel with task 2.",
+      "testStrategy": "A pull request triggers the full pipeline and blocks on failure. A merge deploys to staging unattended. A tag deploys to production. Rehearse one rollback on staging and record the elapsed time."
+    },
+    {
+      "id": 4,
+      "title": "Buyer authentication and session management",
+      "description": "Registration, login, logout, password reset, email verification, and secure session handling for buyer accounts.",
+      "status": "pending",
+      "dependencies": [2],
+      "priority": "high",
+      "details": "Phase 0 | Size: M | P0\n\nWhy this priority: carts, orders, addresses, and payment methods all hang off an identity. Nothing on the money path can be built before it exists.\n\nScope:\n- Email plus password with a modern password hash (argon2id or bcrypt with a sane cost)\n- Email verification and password reset with single-use, short-lived, rate-limited tokens\n- Sessions in Redis with rotation on privilege change; secure, httpOnly, sameSite cookies\n- Rate limiting and lockout on login and reset endpoints\n- Guest identity that survives to checkout and can be upgraded to a full account without losing the cart\n- Optional social login deferred; it must not be assumed by the data model either way\n\nExplicit decision: guest checkout is supported. Forcing account creation before purchase measurably suppresses first-time conversion, and first-time conversion is the entire point of Phase 1.",
+      "testStrategy": "Integration tests for every flow including the failure paths: expired token, reused token, wrong password, locked account. Assert password hashes are never logged and never returned by any API. Verify session fixation is not possible by checking the session identifier rotates on login."
+    },
+    {
+      "id": 5,
+      "title": "Design system and base UI components",
+      "description": "A shared component library with accessible primitives, responsive layout, and design tokens, used by the storefront, seller portal, and admin.",
+      "status": "pending",
+      "dependencies": [1],
+      "priority": "high",
+      "details": "Phase 0 | Size: M | P0\n\nWhy before the pages: three separate applications will consume these components. Building the storefront first and extracting components later produces three divergent visual languages and three separate accessibility problems.\n\nScope:\n- Design tokens: color, spacing, typography, radii, elevation, with a dark-mode-capable structure\n- Primitives: button, input, select, checkbox, radio, modal, drawer, toast, tabs, pagination, skeleton loader\n- Commerce components: price display with currency formatting, rating stars, product card, quantity stepper, address form\n- Responsive layout primitives, mobile-first\n- Keyboard navigation and correct ARIA semantics built into each primitive from the start\n- Component documentation (Storybook or equivalent)\n\nAccessibility is cheap here and expensive in task 38. Build it in now.",
+      "testStrategy": "Automated accessibility checks (axe) pass on every component story. Keyboard-only traversal of a representative form works without a mouse. Visual regression snapshots at mobile, tablet, and desktop breakpoints."
+    },
+    {
+      "id": 6,
+      "title": "Observability baseline",
+      "description": "Structured logging, metrics, error tracking, uptime checks, and alerting wired in before there is production traffic to debug.",
+      "status": "pending",
+      "dependencies": [3],
+      "priority": "medium",
+      "details": "Phase 0 | Size: S | P1\n\nWhy medium rather than high: it does not gate the Phase 0 exit. Why not later: the first production payment failure is the worst possible moment to discover there are no logs. Land it before task 17.\n\nScope:\n- Structured JSON logs with a request correlation identifier propagated across services\n- Error tracking (Sentry or equivalent) with release tagging and source maps\n- RED metrics per endpoint: rate, errors, duration, with p50/p95/p99\n- Uptime checks on the buyer critical path: home, search, product detail, checkout\n- Alert routing to a real destination a human actually reads, with defined thresholds\n- Strict redaction rules: no card data, no passwords, no session tokens, no full addresses in logs\n\nThe redaction rules are a PCI and GDPR requirement, not a nicety.",
+      "testStrategy": "Trigger a deliberate error in staging and confirm it reaches the error tracker with a correlation identifier that ties back to the originating request log. Verify an alert fires and routes correctly. Assert via test that a payload containing a card number and a password is redacted before it reaches the log sink."
+    },
+    {
+      "id": 7,
+      "title": "Payment provider account and split-payment spike",
+      "description": "Open the marketplace payment provider account, complete business verification, and build a throwaway spike proving the split-payment and payout mechanics end to end in a sandbox.",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "details": "Phase 0 | Size: S of engineering, weeks of calendar waiting | P0\n\nWhy this has no dependencies and starts on day one: marketplace payment accounts (Stripe Connect, Adyen for Platforms, Mangopay) require business verification that takes weeks of calendar time and is entirely outside engineering's control. It is the single longest-lead item in the project. Start the paperwork immediately, in parallel with tasks 1 through 6.\n\nScope:\n- Submit the platform business verification application\n- Choose the account model (which entity holds funds, who is merchant of record, who bears chargeback liability) and record the decision with its regulatory reasoning\n- Sandbox spike: charge a buyer once, split across two sellers, take a platform commission, trigger a payout, then issue a partial refund on one seller's portion only\n- Confirm the provider's behavior for the awkward cases: partial refund after payout, seller account frozen mid-order, chargeback on a multi-seller order\n- Document per-transaction and payout fees so unit economics are known before pricing decisions\n\nThe spike code is deliberately disposable. Its output is a written decision record and a set of confirmed constraints for task 17.",
+      "testStrategy": "The sandbox spike demonstrates the full sequence: charge, split, commission, payout, partial refund. Findings are written up as a decision record in the repository, explicitly answering what happens when a refund is requested after the payout has already been sent."
+    },
+    {
+      "id": 8,
+      "title": "Catalog domain: products, variants, and offers",
+      "description": "Implement the catalog domain model and its API: products, their variants, and the competing seller offers attached to each variant.",
+      "status": "pending",
+      "dependencies": [2],
+      "priority": "high",
+      "details": "Phase 1 | Size: L | P0\n\nWhy this shape: on a marketplace, several sellers list the same physical item. Modeling this as independent per-seller products duplicates the catalog, splits reviews across duplicates, and makes price comparison impossible. Product describes the item, Variant carries the sellable configuration (size, color), Offer carries one seller's price, stock, condition, and shipping terms.\n\nScope:\n- CRUD API for products, variants, and offers with validation\n- Variant option model (size, color, and per-category extensions)\n- Offer selection logic: which offer is shown by default (the 'buy box'), with the ranking rule documented and testable\n- Image association with ordering and a designated primary image\n- Publication states: draft, pending review, active, suspended, archived\n- Slug generation and canonical URL structure for SEO\n\nThe buy box rule is a business decision with real consequences for seller behavior. Write it down explicitly rather than letting it emerge from an ORM default sort.",
+      "testStrategy": "Unit tests for buy box selection across ties, out-of-stock offers, and suspended sellers. Integration tests asserting that a product with three sellers' offers returns one default offer and the full competing list. Verify state transitions reject illegal moves such as archived back to active."
+    },
+    {
+      "id": 9,
+      "title": "Category taxonomy and attribute schema",
+      "description": "Hierarchical category tree with per-category attribute definitions that drive listing validation and buyer-facing filters.",
+      "status": "pending",
+      "dependencies": [8],
+      "priority": "high",
+      "details": "Phase 1 | Size: M | P0\n\nWhy it matters: category attributes are what make faceted filtering possible in task 31. A catalog without structured attributes can only ever offer keyword search, and retrofitting attributes onto thousands of existing listings is manual work that scales with catalog size.\n\nScope:\n- Nested category tree with stable identifiers and safe re-parenting\n- Per-category attribute definitions: type, unit, required or optional, allowed values, filterable flag\n- Attribute inheritance down the tree\n- Validation of listings against their category's attribute schema at write time\n- Admin management of the taxonomy (the UI arrives with task 33; the API arrives here)\n\nStart narrow. One category tree three levels deep, covering the launch category properly, beats a shallow taxonomy covering everything badly.",
+      "testStrategy": "Tests asserting a listing missing a required category attribute is rejected. Verify attribute inheritance resolves correctly for a deeply nested category. Confirm re-parenting a category does not orphan its listings."
+    },
+    {
+      "id": 10,
+      "title": "Internal catalog seeding and management tool",
+      "description": "A minimal internal tool for platform staff to create and edit listings, so the storefront has real inventory to display before the seller portal exists.",
+      "status": "pending",
+      "dependencies": [8],
+      "priority": "high",
+      "details": "Phase 1 | Size: S | P0\n\nWhy this exists: Phase 1 proves the buyer money path. That requires a populated catalog, but not seller self-service. This tool is the cheapest way to unblock every storefront task, and it stays useful afterwards for support staff fixing listings and for demo data.\n\nScope:\n- Authenticated internal UI or CLI to create, edit, and publish listings\n- Image upload to object storage with resizing and format conversion\n- CSV import for bulk seeding\n- Hand-onboard the first seller as a database record, no self-service flow\n\nDeliberately unpolished. It is scaffolding, and task 23 supersedes its seller-facing purpose.",
+      "testStrategy": "Seed at least two hundred realistic listings across several categories with images and verify they render on the storefront. Confirm image resizing produces the expected variants and that upload rejects unsupported and oversized files."
+    },
+    {
+      "id": 11,
+      "title": "Category browse and product listing pages",
+      "description": "Server-rendered category and listing pages with pagination, sorting, and basic filtering.",
+      "status": "pending",
+      "dependencies": [5, 9, 10],
+      "priority": "high",
+      "details": "Phase 1 | Size: M | P0\n\nWhy server-rendered: these pages are the primary organic search entry point. Client-only rendering costs indexability and first-paint time, and both convert directly into lost revenue on a catalog site.\n\nScope:\n- Category landing pages with breadcrumb navigation\n- Product grid with responsive image loading and correct aspect ratio reservation to avoid layout shift\n- Sorting: relevance, price ascending and descending, newest, rating\n- Basic filters: price range, category, availability (full faceting arrives in task 31)\n- Pagination that is crawler-friendly and preserves state on the back button\n- Structured data markup (schema.org Product and ItemList)\n- Empty and error states that are designed, not accidental\n\nFilter and sort state must live in the URL so results are shareable and the back button behaves.",
+      "testStrategy": "Lighthouse performance and SEO scores above 90 on a representative category page. Verify filter and sort state survives a page reload and a back-button navigation. Confirm structured data validates against Google's Rich Results test."
+    },
+    {
+      "id": 12,
+      "title": "Product detail page",
+      "description": "The product page: gallery, variant selection, offer and seller information, delivery estimate, stock state, and add to cart.",
+      "status": "pending",
+      "dependencies": [5, 10],
+      "priority": "high",
+      "details": "Phase 1 | Size: M | P0\n\nWhy it is the highest-leverage page: it is where the purchase decision is made. Every trust signal a buyer needs must be visible here without a second click.\n\nScope:\n- Image gallery with zoom and mobile swipe\n- Variant selector that reflects real per-variant availability rather than offering dead ends\n- Price, seller identity and rating, condition, delivery estimate, return policy summary\n- Competing offers from other sellers, with the buy box winner shown by default\n- Stock state messaging including a low-stock signal\n- Add to cart with clear feedback, plus buy now\n- Review summary slot (populated by task 30, stubbed until then)\n- Structured data markup (schema.org Product with offers and aggregate rating)\n\nSelecting an unavailable variant combination must be prevented in the UI, not merely rejected on submit.",
+      "testStrategy": "Verify unavailable variant combinations cannot be selected. Confirm the add-to-cart response updates the cart badge without a full page reload. Lighthouse above 90. Structured data validates."
+    },
+    {
+      "id": 13,
+      "title": "Basic keyword search",
+      "description": "Keyword search over the catalog using Postgres full-text search, with a results page reusing the listing page components.",
+      "status": "pending",
+      "dependencies": [10, 11],
+      "priority": "high",
+      "details": "Phase 1 | Size: S | P0\n\nWhy Postgres and not a search cluster yet: full-text search in Postgres is adequate to roughly ten thousand listings and defers an entire piece of infrastructure, along with its indexing pipeline and its operational burden, out of the MVP. Task 31 replaces this when catalog size or relevance quality demands it, and the interface is designed here so that swap is contained.\n\nScope:\n- Full-text index across title, description, brand, and category\n- Ranked results with the existing sort and filter controls\n- Search box in the global header, present on every page\n- Zero-result state with useful suggestions rather than a dead end\n- Query logging from day one, including queries that return nothing\n\nThe zero-result query log is the input that makes task 31 tractable. Start collecting it now.",
+      "testStrategy": "Assert that a set of representative queries returns relevant listings in the top ten. Verify zero-result queries are logged with their terms. Measure p95 search latency against a seeded catalog and record the baseline for comparison after task 31."
+    },
+    {
+      "id": 14,
+      "title": "Shopping cart",
+      "description": "Persistent, multi-seller-aware cart supporting guest and authenticated users, with merge on login.",
+      "status": "pending",
+      "dependencies": [4, 12],
+      "priority": "high",
+      "details": "Phase 1 | Size: M | P0\n\nWhy multi-seller from the start: a marketplace cart routinely holds items from several sellers, which affects delivery estimates, shipping cost, and eventually order splitting in task 25. Building a single-seller cart and generalizing it later touches checkout, orders, payments, and the ledger.\n\nScope:\n- Add, update quantity, and remove, with optimistic UI and server reconciliation\n- Guest cart in Redis keyed by a cookie; authenticated cart persisted in Postgres\n- Merge on login without losing or silently duplicating items\n- Grouping by seller in the display, with per-seller shipping shown\n- Price and availability revalidation on every cart view, with an honest message when something changed\n- Cart totals: subtotal, per-seller shipping, estimated tax, grand total\n\nA cart that silently loses items is the single most common way to lose a sale that was already won.",
+      "testStrategy": "Integration test of the guest-to-authenticated merge with overlapping items, asserting quantities combine correctly rather than duplicating. Verify a price change between add and view surfaces a visible notice. Confirm cart survives session expiry for authenticated users."
+    },
+    {
+      "id": 15,
+      "title": "Address book and delivery options",
+      "description": "Address management with validation, plus selectable delivery methods with cost and estimated arrival.",
+      "status": "pending",
+      "dependencies": [4],
+      "priority": "high",
+      "details": "Phase 1 | Size: M | P0\n\nScope:\n- Address CRUD with a default shipping and default billing address\n- Country-aware address forms; field order and required fields differ by country and getting this wrong causes failed deliveries\n- Address validation or normalization, at minimum postcode format checking\n- Delivery method selection per seller group with cost and estimated arrival window\n- Delivery estimate calculation from seller handling time plus carrier transit time\n\nCan be built in parallel with task 14; both are required by task 16.",
+      "testStrategy": "Test address forms across at least three countries with materially different formats. Verify delivery estimates account for weekends and configured seller handling time. Confirm an invalid postcode is rejected before checkout rather than at label purchase."
+    },
+    {
+      "id": 16,
+      "title": "Checkout flow",
+      "description": "The complete checkout: address, delivery, payment method, order review, and place order, resilient to interruption.",
+      "status": "pending",
+      "dependencies": [14, 15],
+      "priority": "high",
+      "details": "Phase 1 | Size: L | P0\n\nWhy it is atomic: a partially built checkout has exactly zero value. This task and tasks 17, 18, and 21 form the indivisible core of the MVP and should be planned as one continuous slice.\n\nScope:\n- Step flow that works as one page on desktop and as steps on mobile\n- Guest checkout with an optional account creation offer after the order is placed, never before\n- Order review showing the full price breakdown with no surprises introduced at the final step\n- Idempotent order submission: a double-click, a refresh, or a retry must never create two orders\n- State recovery: an interruption at any step returns the buyer where they left off with the cart intact\n- Inline validation, with server-side validation as the authority\n- Clear, specific error handling for the failure cases: payment declined, item now out of stock, address rejected\n\nIdempotency is not optional. Duplicate orders from a double-clicked submit button are a support and refund cost that recurs forever.",
+      "testStrategy": "Test the double-submit path explicitly and assert exactly one order results. Simulate a network failure at each step and verify recovery. Test the out-of-stock-at-submit path end to end. Measure funnel drop-off per step in staging."
+    },
+    {
+      "id": 17,
+      "title": "Payment integration and card tokenization",
+      "description": "Integrate the payment provider using hosted fields so raw card data never reaches platform servers, with webhook handling and correct split-payment intent construction.",
+      "status": "pending",
+      "dependencies": [7, 16],
+      "priority": "high",
+      "details": "Phase 1 | Size: L | P0\n\nWhy hosted fields: they keep the platform in the smallest possible PCI DSS scope (SAQ A). Any design where card numbers touch platform servers or logs expands the compliance burden by an order of magnitude, permanently.\n\nScope:\n- Hosted payment fields or a redirect flow; no raw PAN ever in application memory, logs, or the database\n- Payment intent construction with the split across sellers and the platform commission, following the constraints established in task 7\n- 3-D Secure and strong customer authentication where required by jurisdiction\n- Webhook endpoint with signature verification and idempotent handlers\n- Reconciliation between provider state and internal order state, including the case where the webhook never arrives\n- Saved payment methods stored as provider tokens only\n- Explicit handling for declines, expiries, insufficient funds, and provider timeouts\n\nThe webhook handler must be idempotent and must tolerate out-of-order delivery. Providers retry, and retries arrive out of order.",
+      "testStrategy": "Full sandbox coverage of success, decline, 3-D Secure challenge, timeout, and duplicate webhook delivery. Assert via log inspection tests that no card data appears anywhere. Verify that replaying a webhook produces no duplicate ledger entries. Test the never-arrives case with a reconciliation job."
+    },
+    {
+      "id": 18,
+      "title": "Order creation, ledger entries, and confirmation",
+      "description": "Convert a successful payment into an order with immutable line items, write the double-entry ledger records, and confirm to the buyer.",
+      "status": "pending",
+      "dependencies": [17],
+      "priority": "high",
+      "details": "Phase 1 | Size: L | P0\n\nWhy the ledger is written here rather than later: the moment the platform accepts money it owes an accurate account of whose money it holds. Reconstructing that history afterwards from payment provider exports is painful, slow, and never quite correct.\n\nScope:\n- Order creation transactionally tied to payment confirmation\n- Immutable order lines: capture the price, tax, and seller terms as they were at purchase time, never by reference to a live product record that can change\n- Double-entry ledger postings: buyer payment in, seller payable, platform commission receivable, provider fees\n- Order state machine with legal transitions only, and a full audit trail of every change\n- Order confirmation page and a durable order reference\n- Invoice generation meeting the applicable jurisdiction's requirements\n\nOrder lines referencing live product rows is a classic and costly bug: a seller edits a price and historical orders silently change value.",
+      "testStrategy": "Property test asserting every ledger transaction balances to zero. Verify order lines are unchanged after the referenced product's price is edited. Test that illegal state transitions are rejected. Reconcile a batch of test orders against the provider's sandbox settlement report."
+    },
+    {
+      "id": 19,
+      "title": "Transactional notification infrastructure",
+      "description": "Email and SMS delivery through a queue, with templates, retries, and the order lifecycle notifications.",
+      "status": "pending",
+      "dependencies": [18, 6],
+      "priority": "high",
+      "details": "Phase 1 | Size: M | P0\n\nWhy it belongs in the MVP: an order with no confirmation email generates a support contact essentially every time. It is cheaper to send the email than to answer the question.\n\nScope:\n- Provider integration (SendGrid, SES, or equivalent) behind an internal interface\n- Queue-based sending with retry and a dead letter queue; never send synchronously in a request handler\n- Templates with a shared layout: order confirmation, payment receipt, shipping notification, delivery confirmation, password reset, email verification\n- Sender authentication (SPF, DKIM, DMARC) configured so mail actually reaches inboxes\n- Bounce and complaint handling, with suppression list management\n- Preference centre and unsubscribe for anything not strictly transactional\n\nDomain authentication is frequently skipped and is the usual reason confirmation emails land in spam.",
+      "testStrategy": "Verify every template renders correctly across major email clients including plain-text fallback. Test the retry path and confirm failures reach the dead letter queue. Confirm SPF, DKIM, and DMARC pass using a mail tester. Assert transactional mail is never suppressed by marketing preferences."
+    },
+    {
+      "id": 20,
+      "title": "Buyer order history and order detail",
+      "description": "Account area where buyers see past orders, track shipments, download invoices, and cancel where still permitted.",
+      "status": "pending",
+      "dependencies": [18],
+      "priority": "high",
+      "details": "Phase 1 | Size: M | P0\n\nWhy it completes the MVP: without it, every question about an order becomes a support contact. It is the deflection mechanism for the highest-volume support category.\n\nScope:\n- Order list with status, date, total, and search\n- Order detail with per-seller shipment grouping and tracking links\n- Invoice download\n- Cancellation while the order is still cancellable, with the rules stated plainly\n- Reorder action\n- Guest order lookup by order reference and email, since guest buyers have no account to log into\n\nGuest order lookup is easy to forget and directly generates support load when missing.",
+      "testStrategy": "Verify a guest can retrieve their order using reference and email, and cannot retrieve anyone else's by guessing. Test cancellation is rejected once the order has shipped. Confirm tracking links resolve to the correct carrier."
+    },
+    {
+      "id": 21,
+      "title": "Inventory reservation and stock management",
+      "description": "Stock levels per offer with reservation during checkout, release on abandonment, and decrement on order placement.",
+      "status": "pending",
+      "dependencies": [8, 16],
+      "priority": "high",
+      "details": "Phase 1 | Size: M | P0\n\nWhy it cannot be deferred: without reservation, two buyers can pay for the last unit. Every such incident costs a refund, an apology, and a seller relationship. It is a correctness requirement, not an optimization.\n\nScope:\n- Stock per offer with atomic decrement under concurrency\n- Reservation on entering checkout, with a time-to-live and automatic release\n- Release on abandonment, expiry, or payment failure\n- Oversell prevention with a database-level guarantee, not an application-level check-then-act\n- Low-stock and out-of-stock thresholds, and automatic delisting at zero\n- Stock adjustment audit log recording who changed what and why\n\nThe check-then-act race is the specific bug to design against here. The guarantee belongs in the database.",
+      "testStrategy": "Concurrency test with many simultaneous buyers competing for the last unit; assert exactly one succeeds. Verify reservations release after the time-to-live. Confirm a failed payment returns stock. Test that stock cannot go negative through any code path."
+    },
+    {
+      "id": 22,
+      "title": "Seller accounts, onboarding, and KYC",
+      "description": "Seller self-service registration with business identity, tax details, bank account collection, and identity verification.",
+      "status": "pending",
+      "dependencies": [4, 7],
+      "priority": "high",
+      "details": "Phase 2 | Size: L | P0 for Phase 2\n\nWhy it opens Phase 2: this is the point where the platform stops being a shop and becomes a marketplace. It is also where regulation bites hardest.\n\nScope:\n- Seller registration with business type, legal entity details, and tax identifiers\n- KYC and AML verification through the payment provider or a dedicated vendor; verification is a legal requirement for handling third-party funds, not a product choice\n- Bank account collection and verification for payouts\n- Seller agreement acceptance with a versioned, timestamped record of exactly which terms were accepted\n- Onboarding state machine: applied, pending verification, verified, suspended, terminated\n- Seller profile page visible to buyers, showing rating and policies\n- Manual review queue for applications the automated checks cannot clear\n\nA seller must not be able to list or receive funds before verification completes. Enforce that in the state machine, not in the UI.",
+      "testStrategy": "Test the full onboarding flow including rejection and resubmission. Assert an unverified seller cannot publish a listing or receive a payout through any API path. Verify the agreement version is recorded and retrievable per seller."
+    },
+    {
+      "id": 23,
+      "title": "Seller listing management",
+      "description": "The seller portal for creating and managing listings: products, variants, images, pricing, and publication state.",
+      "status": "pending",
+      "dependencies": [22, 8],
+      "priority": "high",
+      "details": "Phase 2 | Size: L | P0 for Phase 2\n\nWhy after onboarding: only verified sellers may list. Why before bulk import: the single-listing flow defines the validation rules that bulk import in task 29 reuses.\n\nScope:\n- Listing creation wizard with category selection driving the attribute form from task 9\n- Attach an offer to an existing catalog product, or propose a new product; this distinction is what keeps the shared catalog from fragmenting\n- Image upload with guidelines and automated quality checks\n- Pricing including sale price and scheduled price changes\n- Draft, submit for review, publish, and unpublish\n- Listing quality feedback showing sellers what is missing and why it costs them sales\n- Duplicate detection against the existing catalog\n\nDuplicate detection is what preserves the Product/Variant/Offer model in practice. Without it sellers create parallel products and the catalog fragments within months.",
+      "testStrategy": "Test that a listing violating its category attribute schema is rejected with a specific, actionable message. Verify duplicate detection catches a near-identical listing. Confirm an unverified seller cannot reach the publish action."
+    },
+    {
+      "id": 24,
+      "title": "Seller inventory management",
+      "description": "Seller-facing stock control: per-offer levels, bulk updates, low-stock alerts, and handling time configuration.",
+      "status": "pending",
+      "dependencies": [23, 21],
+      "priority": "high",
+      "details": "Phase 2 | Size: M | P1\n\nScope:\n- Stock view and edit across the seller's catalog\n- Bulk stock update by CSV\n- Low-stock alerts by email and in the portal\n- Handling time per listing, feeding the delivery estimates in task 15\n- Vacation mode suspending a seller's listings without deleting them\n- Stock change history\n\nVacation mode is small and prevents a specific bad outcome: a seller who cannot pause takes orders they cannot fulfil, which damages buyer trust far beyond that seller.",
+      "testStrategy": "Verify bulk CSV update handles partial failure by applying valid rows and reporting invalid ones, rather than failing the whole batch. Confirm vacation mode hides listings from search and product pages while preserving them for the seller. Test that low-stock alerts fire once at the threshold and do not repeat on every subsequent view."
+    },
+    {
+      "id": 25,
+      "title": "Multi-seller order splitting and fulfillment",
+      "description": "Split a placed order into per-seller sub-orders, route them to sellers, and track shipment through to delivery.",
+      "status": "pending",
+      "dependencies": [18, 22],
+      "priority": "high",
+      "details": "Phase 2 | Size: L | P0 for Phase 2\n\nWhy it is the hard part of Phase 2: one buyer payment becomes several independent fulfillment obligations with independent timelines, independent failures, and independent refunds. The buyer must still see one coherent order.\n\nScope:\n- Sub-order creation per seller at order placement\n- Seller order queue with accept, ship, and cancel actions\n- Shipment records with carrier, tracking number, and per-shipment line items\n- Partial shipment support; one sub-order may ship across several parcels\n- Buyer-facing view that unifies the sub-orders into one narrative\n- Seller service-level rules: acceptance window, dispatch deadline, and consequences for missing them\n- Automatic cancellation and refund when a seller misses the dispatch deadline\n\nThe buyer must never be exposed to the internal sub-order structure as a set of separate orders. It is one purchase from their point of view.",
+      "testStrategy": "Place an order spanning three sellers and verify three sub-orders route correctly. Test partial shipment and confirm buyer-facing status is accurate throughout. Verify a missed dispatch deadline triggers cancellation and refund automatically, with correct ledger entries."
+    },
+    {
+      "id": 26,
+      "title": "Commission calculation and seller ledger",
+      "description": "Calculate platform commission per transaction, maintain a per-seller ledger, and produce statements sellers can reconcile.",
+      "status": "pending",
+      "dependencies": [18, 22],
+      "priority": "high",
+      "details": "Phase 2 | Size: L | P0 for Phase 2\n\nWhy correctness matters more than features here: sellers reconcile these numbers against their own books. Discrepancies destroy trust immediately and permanently, and they generate support load that scales with seller count.\n\nScope:\n- Commission plans: percentage, fixed, per-category, and tiered by volume\n- Commission calculated and posted at order placement, adjusted on refund or cancellation\n- Per-seller ledger derived from the double-entry entries written in task 18\n- Statements per period showing gross sales, commission, refunds, adjustments, fees, and net payable\n- Handling for the awkward cases: refund after commission was taken, partial refund, chargeback, and negative balance\n- Downloadable statement export in a format an accountant will accept\n\nThe negative balance case is real: a seller can owe the platform money after refunds exceed sales in a period. Model it explicitly rather than letting it appear as a bug.",
+      "testStrategy": "Property test asserting the seller ledger balance always equals the sum of its entries. Test the full refund-after-commission path and verify the reversal is correct. Verify a period statement reconciles exactly against the underlying ledger entries. Test the negative balance path end to end."
+    },
+    {
+      "id": 27,
+      "title": "Seller payouts",
+      "description": "Scheduled payouts to seller bank accounts with holds, reserves, failure handling, and a full audit trail.",
+      "status": "pending",
+      "dependencies": [26],
+      "priority": "high",
+      "details": "Phase 2 | Size: L | P0 for Phase 2\n\nWhy it closes the Phase 2 gate: a seller who cannot get paid is not a seller. This is the last link in the marketplace loop.\n\nScope:\n- Payout schedule (daily, weekly, or monthly) with a configurable minimum threshold\n- Rolling reserve and hold periods covering refund and chargeback risk\n- Payout execution through the provider, with idempotency so a retry cannot pay twice\n- Failure handling: rejected bank details, frozen accounts, returned transfers\n- Payout history visible to the seller with clear line-item attribution\n- Reconciliation between the internal ledger and provider payout reports\n- Manual hold capability for sellers under investigation\n\nIdempotency is critical. A retried payout that pays twice is money that is very hard to recover.",
+      "testStrategy": "Test the payout batch against the sandbox including partial failure within a batch. Assert a retried payout never double-pays. Verify holds and reserves are correctly withheld and later released. Reconcile a full payout cycle against the provider report with zero variance."
+    },
+    {
+      "id": 28,
+      "title": "Seller dashboard and performance metrics",
+      "description": "The seller portal home: sales, orders needing action, performance against service levels, and buyer feedback.",
+      "status": "pending",
+      "dependencies": [25, 26],
+      "priority": "medium",
+      "details": "Phase 2 | Size: M | P1\n\nWhy medium: sellers can operate without it using the order queue and statements. It becomes important as seller count grows, because it is what makes sellers self-correct instead of contacting support.\n\nScope:\n- Sales metrics: revenue, orders, units, average order value, with period comparison\n- Action queue: orders to ship, listings rejected, stock at zero, messages awaiting reply\n- Performance scorecard: on-time dispatch rate, cancellation rate, defect rate, response time\n- Buyer feedback summary\n- Conversion metrics per listing, showing views against sales\n\nThe performance scorecard should show sellers the same numbers the platform uses to judge them. Hidden metrics produce disputes.",
+      "testStrategy": "Verify dashboard metrics reconcile exactly with the order and ledger data. Test period comparison across a month boundary. Confirm the action queue surfaces every state that genuinely requires seller action and nothing that does not."
+    },
+    {
+      "id": 29,
+      "title": "Bulk catalog import and export",
+      "description": "CSV and spreadsheet import and export for sellers managing catalogs too large for the single-listing UI.",
+      "status": "pending",
+      "dependencies": [23],
+      "priority": "medium",
+      "details": "Phase 2 | Size: M | P2\n\nWhy medium: it only matters once professional sellers with hundreds of SKUs are onboarding. Small sellers never touch it. Prioritize it against the actual seller mix rather than in advance.\n\nScope:\n- Template download per category with the correct attribute columns\n- Import with row-level validation and a clear error report identifying the row and field\n- Partial success: apply valid rows, report invalid ones, never fail the whole file for one bad row\n- Asynchronous processing with progress feedback for large files\n- Export of the seller's current catalog in the same format, so export-edit-reimport works as a round trip\n- Scheduled import from a URL for sellers with external inventory systems\n\nThe round trip is the feature. Export that cannot be reimported is half a feature.",
+      "testStrategy": "Import a file of ten thousand rows including deliberately malformed ones and verify valid rows apply while invalid rows are reported precisely. Test the export-edit-reimport round trip preserves all data. Confirm large imports do not block or time out the request path."
+    },
+    {
+      "id": 30,
+      "title": "Reviews and ratings",
+      "description": "Verified-purchase product reviews and seller ratings, with moderation and aggregation.",
+      "status": "pending",
+      "dependencies": [20, 25],
+      "priority": "high",
+      "details": "Phase 3 | Size: M | P1\n\nWhy it is high within Phase 3: reviews are the primary trust signal on a marketplace where the buyer has no relationship with the seller. Conversion on listings without reviews is materially worse, and the effect compounds because reviews accumulate over time. Starting late means the catalog stays thin on reviews for a long while.\n\nScope:\n- Verified-purchase reviews only, tied to a delivered order line\n- Star rating plus text, with optional photos\n- Separate seller rating covering the transaction rather than the product\n- Aggregation onto product and seller records, incrementally maintained\n- Moderation queue with automated filtering for profanity and obvious spam\n- Seller right of reply\n- Helpful voting and sorting by helpfulness or recency\n- Review solicitation email a sensible interval after delivery\n\nVerified purchase is the constraint that makes reviews worth anything. Unverified reviews attract manipulation immediately.",
+      "testStrategy": "Assert a review cannot be created without a matching delivered order line. Verify aggregate ratings update correctly on create, edit, and moderation removal. Test that the moderation queue catches a representative spam sample. Confirm one review per order line is enforced."
+    },
+    {
+      "id": 31,
+      "title": "Search service with facets, autocomplete, and relevance tuning",
+      "description": "Replace Postgres full-text search with a dedicated search cluster offering faceted filtering, typo tolerance, autocomplete, and tunable ranking.",
+      "status": "pending",
+      "dependencies": [13, 9],
+      "priority": "high",
+      "details": "Phase 3 | Size: L | P1\n\nWhy now and not earlier: it is the single biggest conversion lever on a large catalog, but it is only worth its infrastructure cost once the catalog is large enough that keyword matching visibly fails. The zero-result query log from task 13 tells you when that moment has arrived.\n\nScope:\n- OpenSearch or Elasticsearch cluster with an index schema derived from the category attributes in task 9\n- Asynchronous indexing pipeline driven by catalog change events, with a full reindex path\n- Faceted filtering with accurate counts, driven by category attributes\n- Typo tolerance, synonyms, and stemming per language\n- Autocomplete with a sub-100ms budget\n- Relevance ranking blending text match, popularity, seller performance, availability, and price competitiveness\n- Search analytics: click-through rate, conversion by query, zero-result rate\n- A/B testing capability for ranking changes\n\nRelevance is an ongoing workstream, not a ticket. This task delivers the platform for tuning it; the tuning never finishes.",
+      "testStrategy": "Assemble a judged relevance set of representative queries and measure precision at ten before and after. Verify facet counts match actual result counts exactly. Assert index lag stays under thirty seconds under normal write load. Confirm a full reindex completes without downtime."
+    },
+    {
+      "id": 32,
+      "title": "Returns and refunds",
+      "description": "Buyer-initiated return requests, seller and operator approval, return shipping, and refund processing with correct ledger reversal.",
+      "status": "pending",
+      "dependencies": [25, 26],
+      "priority": "high",
+      "details": "Phase 3 | Size: L | P1\n\nWhy it is high within Phase 3: returns are legally mandated in most jurisdictions (distance selling rules give consumers a withdrawal right), and an unmanaged return process becomes the largest source of disputes and chargebacks. Chargebacks cost more than refunds and threaten the payment account itself.\n\nScope:\n- Return request with reason codes and a window derived from the applicable policy\n- Approval flow: automatic for policy-covered reasons, seller review for others, operator arbitration when contested\n- Return shipping labels and tracking\n- Refund processing: full, partial, and shipping-inclusive where required\n- Ledger reversal including the commission adjustment from task 26\n- Restocking on receipt, where the item is resellable\n- Return rate metrics per seller and per product, feeding the seller scorecard\n\nThe refund-after-payout case must be handled explicitly. Task 7 established what the provider does; implement the platform's answer here.",
+      "testStrategy": "Test the full cycle from request through label, receipt, refund, and ledger reversal. Verify commission reverses correctly on partial refunds. Test refund after payout has been sent and confirm the seller balance goes negative correctly rather than failing. Confirm the statutory withdrawal window is enforced per jurisdiction."
+    },
+    {
+      "id": 33,
+      "title": "Admin back-office and content moderation",
+      "description": "Internal tooling for listing moderation, prohibited-item enforcement, dispute resolution, taxonomy management, and user administration.",
+      "status": "pending",
+      "dependencies": [22, 23, 30],
+      "priority": "high",
+      "details": "Phase 3 | Size: L | P1\n\nWhy it gates public seller signup: the moment sellers self-onboard without staff review, prohibited and counterfeit listings arrive. Opening signup without moderation tooling is a legal and reputational exposure, and the tooling takes longer to build than the problem takes to appear.\n\nScope:\n- Listing moderation queue with bulk approve and reject, and reason codes\n- Prohibited and restricted category rules with automated flagging\n- Counterfeit and intellectual property complaint handling with a takedown workflow\n- Dispute resolution workspace showing the full order, message, and evidence history in one place\n- Seller administration: suspend, terminate, adjust commission, place payout holds\n- Buyer administration: account issues, refund overrides, fraud flags\n- Taxonomy management UI over the task 9 API\n- Role-based access control with an audit log of every administrative action\n\nEvery administrative action must be attributable to a named operator. This is both an internal control and a regulatory expectation.",
+      "testStrategy": "Verify role-based access prevents privilege escalation across every admin route. Assert every state-changing admin action writes an audit entry naming the operator. Test bulk moderation on a realistic queue size. Confirm the takedown workflow removes a listing from search and product pages immediately."
+    },
+    {
+      "id": 34,
+      "title": "Fraud controls and risk review",
+      "description": "Risk scoring, velocity limits, and a manual review queue covering both buyer-side payment fraud and seller-side account fraud.",
+      "status": "pending",
+      "dependencies": [17, 22],
+      "priority": "high",
+      "details": "Phase 3 | Size: M | P1\n\nWhy it must precede public seller signup and paid acquisition: fraud arrives the moment payments work and scales the moment signup opens. Excessive chargebacks put the payment account itself at risk, which is an existential rather than merely expensive problem.\n\nScope:\n- Buyer-side rules: card testing detection, velocity limits, mismatched shipping and billing geography, high-value first orders\n- Seller-side rules: fake listings, price manipulation, review manipulation rings, account takeover\n- Risk scoring at checkout with three outcomes: allow, review, block\n- Manual review queue with the evidence needed to decide, and a service-level target so held orders do not rot\n- Chargeback handling with evidence assembly and representment\n- Device fingerprinting and IP reputation\n- Integration with the payment provider's own risk signals\n\nTune the false-positive rate deliberately. Blocking legitimate buyers is a real cost that is invisible in the fraud metrics.",
+      "testStrategy": "Replay a set of known fraud patterns and confirm each is caught. Measure the false-positive rate against legitimate order history and set an explicit acceptable threshold. Verify review queue items reach a decision within the service-level target. Test the chargeback evidence package is complete against the provider's requirements."
+    },
+    {
+      "id": 35,
+      "title": "Security hardening and penetration test",
+      "description": "Systematic security review of the platform followed by an external penetration test and remediation.",
+      "status": "pending",
+      "dependencies": [17, 22],
+      "priority": "high",
+      "details": "Phase 3 | Size: M | P1\n\nWhy before public launch: the platform holds payment tokens, personal data, and seller bank details. A breach is existential for a marketplace whose entire proposition is being the trusted intermediary.\n\nScope:\n- Authorization audit: assert every endpoint checks object-level ownership, not merely authentication. Broken object-level authorization is the most common and most damaging API vulnerability\n- Input validation and output encoding review across all user-generated content\n- Rate limiting on authentication, search, checkout, and all write endpoints\n- Secrets management audit: nothing in the repository, rotation procedure documented\n- Dependency scanning in the pipeline with a policy for handling findings\n- Security headers, cookie flags, CORS policy, and content security policy\n- External penetration test, remediation, and retest\n- Incident response plan with named responsibilities and a breach notification procedure\n\nThe object-level authorization audit is the highest-value item here. Test it by attempting to access another user's order, another seller's listings, and another seller's payouts.",
+      "testStrategy": "Automated tests attempting cross-tenant access on every resource type, asserting denial. Pipeline fails on high-severity dependency findings. External penetration test report shows no unremediated high or critical findings. Incident response plan is walked through once as a tabletop exercise."
+    },
+    {
+      "id": 36,
+      "title": "Performance, caching, and CDN",
+      "description": "Systematic performance work driven by real measurements: caching strategy, CDN configuration, database query optimization, and image delivery.",
+      "status": "pending",
+      "dependencies": [11, 12, 31],
+      "priority": "medium",
+      "details": "Phase 3 | Size: M | P2\n\nWhy medium and why late: performance work before real traffic optimizes the wrong things. This task exists to be executed against measurements, not predictions. The measurement setup, however, should already exist from task 6.\n\nScope:\n- CDN for static assets and images, with cache headers correct for each asset class\n- Page-level caching for catalog and product pages, with a precise invalidation strategy on catalog change\n- Redis caching for hot reads, with an explicit stale-data policy per cache\n- Database query optimization guided by actual slow query logs, not intuition\n- Image optimization: modern formats, responsive sizes, lazy loading below the fold\n- Core Web Vitals budget enforced in the pipeline so regressions fail the build\n- Load testing against realistic traffic shapes including a sale-event spike\n\nCache invalidation on price and stock change is the subtle part. Serving a stale price is a support and refund problem, not merely a display bug.",
+      "testStrategy": "Core Web Vitals meet the good threshold on the catalog, product, and search pages at the 75th percentile of real traffic. Load test sustains the target peak with p95 latency within budget. Verify a price change invalidates cached pages within the documented window. Pipeline fails on a deliberate performance regression."
+    },
+    {
+      "id": 37,
+      "title": "GDPR and data protection compliance",
+      "description": "Data subject rights, consent management, retention policies, and the documentation a regulator would ask for.",
+      "status": "pending",
+      "dependencies": [4, 22],
+      "priority": "high",
+      "details": "Phase 3 | Size: M | P1\n\nWhy high: these are legal obligations with defined response deadlines and material penalties, not product features. They also constrain the data model, so discovering them late means migrations.\n\nScope:\n- Data export covering all personal data held about a subject, in a portable format\n- Erasure honoring the legal retention obligations that override it, such as tax records on completed transactions\n- Consent capture with a versioned record of what was consented to and when\n- Cookie consent with genuine granularity, where rejection actually prevents the tracking\n- Retention policies per data category, with automated purging\n- Data processing register and processor agreements with every third party receiving personal data\n- Breach notification procedure meeting the 72-hour requirement\n\nErasure that ignores tax retention is itself a compliance failure. The two obligations must be reconciled explicitly per data category, and that reconciliation documented.",
+      "testStrategy": "Execute an export request end to end and verify completeness against a data inventory. Execute an erasure and verify personal data is removed while legally retained records survive in a form that no longer identifies the subject. Confirm rejecting cookie consent actually prevents tracking requests, verified by network inspection."
+    },
+    {
+      "id": 38,
+      "title": "Accessibility audit and remediation",
+      "description": "Audit the storefront and checkout against WCAG 2.1 AA and remediate findings.",
+      "status": "pending",
+      "dependencies": [5, 16],
+      "priority": "medium",
+      "details": "Phase 3 | Size: M | P2\n\nWhy medium: task 5 built accessibility into the component primitives, which handles most of it. This task catches what composition and page-level structure broke. Why it still matters: accessibility is a legal requirement for commercial services in many jurisdictions, and the checkout is exactly where an inaccessible flow costs a completed sale.\n\nScope:\n- Automated scanning across all page templates in the pipeline\n- Manual keyboard-only traversal of the full purchase path\n- Screen reader testing on the critical path with at least two readers\n- Focus management on dynamic content: modals, drawers, live regions, form errors\n- Color contrast verification in both themes\n- Form error messaging that is programmatically associated with its field, not merely visually adjacent\n- Alternative text policy for product images, including seller-supplied images\n- Published accessibility statement\n\nThe checkout flow is the priority. An inaccessible product page loses a browser; an inaccessible checkout loses a buyer who had already decided.",
+      "testStrategy": "Automated axe scans pass on every page template and run in the pipeline. A complete purchase is achievable using only a keyboard, and separately using only a screen reader. All text meets AA contrast in both themes."
+    },
+    {
+      "id": 39,
+      "title": "Promotions, coupons, and discounts",
+      "description": "Promotion engine supporting coupon codes, automatic discounts, and seller-funded and platform-funded campaigns.",
+      "status": "pending",
+      "dependencies": [16, 26],
+      "priority": "medium",
+      "details": "Phase 4 | Size: L | P2\n\nWhy it is the first Phase 4 item: it is the most direct lever on conversion and average order value available after launch, and marketing will ask for it immediately.\n\nScope:\n- Coupon codes with usage limits, per-buyer limits, expiry, and minimum spend\n- Automatic promotions: percentage off, fixed amount, buy-one-get-one, free shipping thresholds\n- Funding attribution: seller-funded or platform-funded, which changes the commission calculation in task 26\n- Stacking rules with a documented, testable precedence order\n- Promotion scheduling and campaign management in the admin\n- Promotional badging on listing and product pages\n- Abuse prevention: code sharing, multi-account exploitation\n\nStacking rules are where promotion engines go wrong. Define precedence explicitly and test the combinations, including the ones that would produce a negative total.",
+      "testStrategy": "Test every stacking combination including the pathological ones, asserting the order total never goes below zero. Verify funding attribution produces correct commission in both the seller-funded and platform-funded cases. Test usage limits hold under concurrent redemption of the same code."
+    },
+    {
+      "id": 40,
+      "title": "Wishlist and save for later",
+      "description": "Persistent wishlists with price-drop and back-in-stock notifications, plus save-for-later from the cart.",
+      "status": "pending",
+      "dependencies": [14],
+      "priority": "low",
+      "details": "Phase 4 | Size: S | P3\n\nWhy low: pleasant, well understood, and not on the money path. Its real value is the notification hook — a price-drop email is one of the highest-converting messages a marketplace sends, because the buyer already declared intent.\n\nScope:\n- Multiple named lists, optionally shareable\n- Move between cart and wishlist without losing variant selection\n- Price-drop notification when a saved item's price falls\n- Back-in-stock notification\n- Guest wishlist in local storage, merged on account creation\n\nBuild the notification triggers even if the list UI stays minimal. That is where the value is.",
+      "testStrategy": "Verify price-drop notifications fire once per price decrease rather than repeatedly. Confirm the guest-to-account merge preserves items and variant selection. Test that back-in-stock notifications respect the buyer's notification preferences."
+    },
+    {
+      "id": 41,
+      "title": "Recommendations",
+      "description": "Behavioral recommendations: related products, frequently bought together, recently viewed, and personalized home page modules.",
+      "status": "pending",
+      "dependencies": [30, 31],
+      "priority": "low",
+      "details": "Phase 4 | Size: L | P3\n\nWhy last among the growth items: recommendations require behavioral data to be anything other than embarrassing. Shipping them before there is meaningful traffic produces obviously poor suggestions that erode trust rather than building it.\n\nScope:\n- Event collection: views, add-to-cart, purchase, search, with a defined schema\n- Co-visitation and co-purchase computation as a starting point; it is simple and surprisingly effective\n- Recommendation slots: product page related items, cart page complements, home page personalization, post-purchase email\n- Cold-start fallback to category bestsellers, which must be genuinely good since it will serve most early traffic\n- A/B testing framework to measure whether any of it actually helps\n- Business rule overrides: exclude out-of-stock, exclude suspended sellers, respect category adjacency rules\n\nStart with co-purchase counts. Reach for machine learning only when the simple approach measurably plateaus.",
+      "testStrategy": "A/B test each recommendation slot against no recommendations and against the category-bestseller fallback, measuring incremental revenue rather than click-through alone. Verify business rule overrides always apply. Confirm cold-start behavior for a brand-new product is sensible."
+    },
+    {
+      "id": 42,
+      "title": "Product questions and answers",
+      "description": "Buyer questions on product pages answered by sellers or by buyers who own the product, with moderation.",
+      "status": "pending",
+      "dependencies": [12, 33],
+      "priority": "low",
+      "details": "Phase 4 | Size: M | P3\n\nWhy low: valuable for high-consideration purchases and useless for low-consideration ones. It also adds moderation load proportional to volume, which is a real ongoing cost.\n\nScope:\n- Question submission on the product page\n- Answers from the seller or from verified owners of the product\n- Voting to surface the most useful answers\n- Notification to sellers of unanswered questions, with a response-time metric feeding the scorecard\n- Moderation reusing the queue from task 33\n- Answered questions indexed for search, since they are genuinely useful long-tail content\n\nThe response-time metric is what makes this work. Unanswered questions on a product page are worse than no questions at all.",
+      "testStrategy": "Verify only sellers and verified owners can answer. Confirm moderation routes to the existing queue. Test that unanswered questions escalate to the seller within the defined window. Assert answers are indexed and findable via search."
+    },
+    {
+      "id": 43,
+      "title": "Seller API",
+      "description": "Public REST API for professional sellers to integrate their own inventory and order management systems.",
+      "status": "pending",
+      "dependencies": [23, 29],
+      "priority": "low",
+      "details": "Phase 4 | Size: L | P3\n\nWhy low despite high value to a small group: it only matters for professional sellers, and CSV import in task 29 covers most of that need at a fraction of the cost. Build it when a specific seller cohort is genuinely blocked by its absence, not before.\n\nScope:\n- Authentication via API keys or OAuth, with scoped permissions\n- Endpoints for listings, inventory, orders, shipments, and financial reports\n- Webhooks for order placed, order cancelled, and payout sent\n- Rate limiting per seller with clear headers and documented limits\n- Versioning strategy and a deprecation policy, committed to publicly\n- Developer documentation with working examples and a sandbox environment\n\nA public API is a permanent commitment. Version it properly from the first release, because the deprecation policy is the expensive part to add later.",
+      "testStrategy": "Contract tests against the published specification. Verify rate limiting returns correct headers and status codes. Confirm webhook delivery retries with backoff and is idempotent from the consumer's perspective. Validate every documentation example actually runs against the sandbox."
+    },
+    {
+      "id": 44,
+      "title": "Internationalization and multi-currency",
+      "description": "Multiple languages, currencies, tax regimes, and country-specific delivery and returns rules.",
+      "status": "pending",
+      "dependencies": [17, 31],
+      "priority": "medium",
+      "details": "Phase 4 | Size: XL — split before starting | P2\n\nWhy medium rather than low: if international expansion is on the roadmap at all, several of its constraints must be respected from the start. Money is already stored as minor units with an explicit currency (task 2) and prices are already captured on order lines (task 18), which are the two decisions that would otherwise be prohibitive to retrofit.\n\nWhy XL: this is really four projects — content translation, currency and pricing, tax and regulation, and logistics. Split it before starting.\n\nScope:\n- Translation infrastructure with locale routing and hreflang markup\n- Multi-currency display and settlement, with an explicit policy on who bears exchange rate risk\n- Per-jurisdiction tax calculation, which almost certainly means a third-party tax service\n- Country-specific address formats, delivery options, and statutory return windows\n- Locale-aware search: language-specific stemming and synonyms in task 31\n- Per-market legal content: terms, privacy, and consumer rights notices\n\nTax is the part that is invariably underestimated. VAT rules vary by country, by product category, and by whether the seller is domestic or foreign. Buy this rather than building it.",
+      "testStrategy": "Verify tax calculation against known cases in each target jurisdiction, including cross-border sales. Confirm currency conversion and rounding never lose money in either direction. Test that a full purchase completes correctly in each supported locale. Verify hreflang markup is correct across all localized pages."
+    },
+    {
+      "id": 45,
+      "title": "Analytics and business intelligence",
+      "description": "Event pipeline, data warehouse, and dashboards for the business metrics that drive decisions.",
+      "status": "pending",
+      "dependencies": [18, 26],
+      "priority": "medium",
+      "details": "Phase 4 | Size: M | P2\n\nWhy medium: several earlier tasks assume measurement exists — search relevance in task 31, recommendations in task 41, and promotions in task 39 all need it to know whether they worked. Consider pulling the event collection portion forward into Phase 3 even if the dashboards wait.\n\nScope:\n- Event collection with a versioned, documented schema\n- Warehouse loading with the transformation layer defined as code\n- Core dashboards: GMV, take rate, order volume, average order value, conversion funnel\n- Cohort analysis: buyer repeat rate, seller retention, category performance\n- Funnel analysis from landing through to purchase, with drop-off at each step\n- Seller-facing analytics reusing the same pipeline as task 28\n- Attribution for paid acquisition\n\nThe warehouse must reconcile to the ledger. Two systems reporting different revenue numbers is a recurring, corrosive argument.",
+      "testStrategy": "Reconcile warehouse revenue against ledger revenue to the penny for a full period. Verify funnel step counts are internally consistent. Confirm the event schema is versioned and that a schema change does not silently break historical dashboards."
+    },
+    {
+      "id": 46,
+      "title": "Progressive web app and mobile experience",
+      "description": "Installable PWA with offline browsing, push notifications, and mobile-optimized checkout.",
+      "status": "pending",
+      "dependencies": [36, 38],
+      "priority": "low",
+      "details": "Phase 4 | Size: L | P3\n\nWhy last: the responsive storefront already serves mobile users from Phase 1. This is an incremental improvement for repeat buyers, and it should be justified by measured mobile conversion data rather than assumed.\n\nWhy a PWA rather than native apps: a single codebase, no app store review cycle, and no separate release process. Revisit native only if push engagement or platform payment integration proves decisive.\n\nScope:\n- Service worker with an offline browsing shell and cached catalog pages\n- Install prompt with sensible timing, shown after demonstrated engagement rather than on first visit\n- Push notifications for order status and price drops, respecting the preference centre from task 19\n- Mobile checkout using platform payment sheets (Apple Pay, Google Pay) where available\n- Camera-based barcode search\n- App store presence via a wrapper, only if distribution genuinely requires it\n\nPlatform payment sheets are the highest-value item here. They remove nearly all checkout friction on mobile, which is where most of the traffic is.",
+      "testStrategy": "Verify offline mode serves cached content and degrades gracefully for uncached routes. Confirm push notifications respect preferences and unsubscribe. Measure mobile checkout completion rate before and after platform payment sheets. Test installation on both major mobile platforms."
+    }
+  ]
+}

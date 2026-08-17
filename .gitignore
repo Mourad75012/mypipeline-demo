@@ -25,5 +25,8 @@ node_modules/
 .DS_Store
 
 # Task files
-tasks.json
-tasks/ 
+# The Task Master scaffold ignores these by default. We track them instead:
+# tasks/tasks.json is the shared backlog and belongs in version control.
+# The generated per-task files (tasks/task_*.txt) stay ignored — regenerate with
+# `npm run generate` after editing tasks.json.
+tasks/task_*.txt 
