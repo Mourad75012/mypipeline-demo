@@ -11,5 +11,10 @@ steps {
 sh './run.sh'
 }
 }
+stage('ECC') {
+steps {
+sh './ecc/run-ecc.sh'
+}
+}
 }
 }
