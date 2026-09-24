@@ -34,7 +34,7 @@
       .big { font-size: 104px; font-weight: 800; line-height: 1.04; letter-spacing: -0.03em; }
       .hl { color: var(--accent); }
       .badge { display: flex; flex-direction: column; gap: 16px; }
-      .code { font-weight: 900; line-height: 1; letter-spacing: -0.04em; color: var(--accent); }
+      .code { white-space: nowrap; font-weight: 900; line-height: 1; letter-spacing: -0.04em; color: var(--accent); }
       .name { font-size: 46px; font-weight: 700; }
       .org { font-size: 36px; font-weight: 500; color: #cbd5e1; }
       .list { display: flex; flex-direction: column; gap: 22px; margin-top: 20px; }
@@ -84,8 +84,13 @@
         el.textContent = v[el.dataset.var];
       });
       // Taille du sigle adaptée à sa longueur (PMP vs ISTQB Automation)
-      document.querySelector("#s2 .code").style.fontSize =
-        Math.min(200, Math.floor(1500 / v.code.length)) + "px";
+      const codeEl = document.querySelector("#s2 .code");
+      let codeSize = Math.min(200, Math.floor(1500 / v.code.length));
+      codeEl.style.fontSize = codeSize + "px";
+      // Garde le sigle sur une seule ligne s'il déborde encore (ex. SAFe POPM)
+      while (codeEl.scrollWidth > codeEl.clientWidth && codeSize > 60) {
+        codeEl.style.fontSize = --codeSize + "px";
+      }
 
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
