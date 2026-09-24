@@ -6,6 +6,7 @@
     "dev": "npx --yes hyperframes@0.8.73 preview",
     "check": "npx --yes hyperframes@0.8.73 check",
     "render": "npx --yes hyperframes@0.8.73 render",
-    "publish": "npx --yes hyperframes@0.8.73 publish"
+    "publish": "npx --yes hyperframes@0.8.73 publish",
+    "render:all": "npx --yes hyperframes@0.8.73 render --batch certifications.json -o \"renders/reel-{slug}.mp4\" --strict-variables"
   }
 }

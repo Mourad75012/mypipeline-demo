@@ -1,8 +1,16 @@
-<!DOCTYPE html>
-<html lang="fr" data-resolution="portrait">
+<!doctype html>
+<html lang="fr" data-resolution="portrait" data-composition-variables='[
+  {"id":"slug","type":"string","label":"Nom du fichier","default":"pmp"},
+  {"id":"code","type":"string","label":"Certification (court)","default":"PMP"},
+  {"id":"name","type":"string","label":"Intitulé complet","default":"Project Management Professional (PMP)®"},
+  {"id":"org","type":"string","label":"Organisme certificateur","default":"PMI"},
+  {"id":"audience","type":"string","label":"Public visé","default":"Chefs de projet expérimentés"},
+  {"id":"point","type":"string","label":"Point fort","default":"Couvre les 35 h de formation exigées par le PMI"},
+  {"id":"accent","type":"color","label":"Couleur d’accent","default":"#fbbf24"}
+]'>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=1080, height=1920">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
     <script src="assets/gsap.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,6 +19,7 @@
         background: #0b1020;
       }
       #root {
+        --accent: #fbbf24;
         position: relative; width: 100%; height: 100%;
         font-family: Inter, ui-sans-serif, system-ui, sans-serif;
         color: #f8fafc;
@@ -21,49 +30,74 @@
         position: absolute; left: 90px; right: 90px; top: 250px; bottom: 420px;
         display: flex; flex-direction: column; justify-content: center; gap: 40px;
       }
-      .kicker { font-size: 44px; font-weight: 600; color: #fbbf24; letter-spacing: 0.02em; }
-      .big { font-size: 112px; font-weight: 800; line-height: 1.02; letter-spacing: -0.03em; }
-      .chips { display: flex; flex-wrap: wrap; gap: 24px; }
-      .chip {
-        font-size: 48px; font-weight: 700; padding: 20px 36px; border-radius: 999px;
-        background: #f8fafc; color: #0b1020;
+      .kicker { font-size: 42px; font-weight: 600; color: var(--accent); letter-spacing: 0.02em; }
+      .big { font-size: 104px; font-weight: 800; line-height: 1.04; letter-spacing: -0.03em; }
+      .hl { color: var(--accent); }
+      .badge { display: flex; flex-direction: column; gap: 16px; }
+      .code { font-weight: 900; line-height: 1; letter-spacing: -0.04em; color: var(--accent); }
+      .name { font-size: 46px; font-weight: 700; }
+      .org { font-size: 36px; font-weight: 500; color: #cbd5e1; }
+      .list { display: flex; flex-direction: column; gap: 22px; margin-top: 20px; }
+      .item {
+        font-size: 42px; font-weight: 600; padding: 24px 32px; border-radius: 20px;
+        background: rgba(248, 250, 252, 0.08); border-left: 8px solid var(--accent);
       }
+      .sub { font-size: 44px; font-weight: 600; color: #cbd5e1; line-height: 1.3; }
       .cta {
-        font-size: 60px; font-weight: 800; padding: 36px 48px; border-radius: 28px;
-        background: #fbbf24; color: #0b1020; align-self: flex-start;
+        font-size: 52px; font-weight: 800; padding: 34px 44px; border-radius: 28px;
+        background: var(--accent); color: #0b1020; align-self: flex-start;
       }
     </style>
   </head>
   <body>
-    <div data-hf-id="hf-qv3y" id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15"
+         data-width="1080" data-height="1920">
 
-      <div data-hf-id="hf-n53x" id="s1" class="scene clip" data-start="0" data-duration="5" data-track-index="0">
-        <div data-hf-id="hf-enq4" class="kicker">Formations certifiantes</div>
-        <div data-hf-id="hf-mb2h" class="big">Boostez votre carrière en gestion de projet</div>
+      <div id="s1" class="scene clip" data-start="0" data-duration="4" data-track-index="0">
+        <div class="kicker">Organismes de formation · ESN · Cabinets</div>
+        <div class="big">Besoin d’un formateur <span class="hl" data-var="code"></span>&nbsp;?</div>
       </div>
 
-      <div data-hf-id="hf-187d" id="s2" class="scene clip" data-start="5" data-duration="5" data-track-index="0">
-        <div data-hf-id="hf-lbsa" class="kicker">Les certifications les plus demandées</div>
-        <div data-hf-id="hf-exrd" class="chips">
-          <span data-hf-id="hf-uxg8" class="chip">PMP</span><span data-hf-id="hf-o0n1" class="chip">PSM</span>
-          <span data-hf-id="hf-91ma" class="chip">SAFe</span><span data-hf-id="hf-f6z0" class="chip">PRINCE2</span>
-          <span data-hf-id="hf-mo8b" class="chip">ITIL 4</span><span data-hf-id="hf-9c0y" class="chip">ISTQB</span>
+      <div id="s2" class="scene clip" data-start="4" data-duration="5.5" data-track-index="0">
+        <div class="badge">
+          <div class="code" data-var="code"></div>
+          <div class="name" data-var="name"></div>
+          <div class="org">Certification <span data-var="org"></span></div>
+        </div>
+        <div class="list">
+          <div class="item">👥 <span data-var="audience"></span></div>
+          <div class="item">🎯 <span data-var="point"></span></div>
+          <div class="item">✅ Préparation complète à l’examen</div>
         </div>
       </div>
 
-      <div data-hf-id="hf-qwb8" id="s3" class="scene clip" data-start="10" data-duration="5" data-track-index="0">
-        <div data-hf-id="hf-hajm" class="big">Formez vos équipes avec un expert certifié</div>
-        <div data-hf-id="hf-1jad" class="cta">Contactez-moi →</div>
+      <div id="s3" class="scene clip" data-start="9.5" data-duration="5.5" data-track-index="0">
+        <div class="big">Formateur certifié, disponible pour vos sessions <span class="hl" data-var="code"></span></div>
+        <div class="sub">Intra · Inter · Distanciel<br />Sous-traitance &amp; marque blanche</div>
+        <div class="cta">Écrivez-moi en DM →</div>
       </div>
     </div>
     <script>
+      const v = window.__hyperframes.getVariables();
+      document.getElementById("root").style.setProperty("--accent", v.accent);
+      document.querySelectorAll("[data-var]").forEach((el) => {
+        el.textContent = v[el.dataset.var];
+      });
+      // Taille du sigle adaptée à sa longueur (PMP vs ISTQB Automation)
+      document.querySelector("#s2 .code").style.fontSize =
+        Math.min(200, Math.floor(1500 / v.code.length)) + "px";
+
+      window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
       tl.from("#s1 .kicker", { opacity: 0, y: 30, duration: 0.5 }, 0.2)
         .from("#s1 .big", { opacity: 0, y: 60, duration: 0.7, ease: "power3.out" }, 0.4)
-        .from("#s2 .kicker", { opacity: 0, y: 30, duration: 0.5 }, 5.2)
-        .from("#s2 .chip", { opacity: 0, scale: 0.6, duration: 0.4, stagger: 0.15, ease: "back.out(2)" }, 5.5)
-        .from("#s3 .big", { opacity: 0, y: 60, duration: 0.7, ease: "power3.out" }, 10.2)
-        .from("#s3 .cta", { opacity: 0, scale: 0.8, duration: 0.5, ease: "back.out(2)" }, 11);
+        .from("#s2 .code", { opacity: 0, scale: 0.7, duration: 0.6, ease: "back.out(2)" }, 4.1)
+        .from("#s2 .name, #s2 .org", { opacity: 0, y: 30, duration: 0.5, stagger: 0.15 }, 4.5)
+        .from("#s2 .item", { opacity: 0, x: -60, duration: 0.5, stagger: 0.35, ease: "power3.out" }, 5.2)
+        .from("#s3 .big", { opacity: 0, y: 60, duration: 0.7, ease: "power3.out" }, 9.7)
+        .from("#s3 .sub", { opacity: 0, y: 30, duration: 0.5 }, 10.4)
+        .from("#s3 .cta", { opacity: 0, scale: 0.8, duration: 0.5, ease: "back.out(2)" }, 11)
+        .to("#s3 .cta", { scale: 1.06, duration: 0.4, yoyo: true, repeat: 5, ease: "sine.inOut" }, 11.8);
       window.__timelines["main"] = tl;
       tl.seek(0);
     </script>

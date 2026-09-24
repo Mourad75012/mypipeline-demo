@@ -1,0 +1,29 @@
+[
+  { "slug": "pmp", "code": "PMP", "name": "Project Management Professional (PMP)®", "org": "PMI", "audience": "Chefs de projet expérimentés", "point": "Couvre les 35 h de formation exigées par le PMI", "accent": "#fbbf24" },
+  { "slug": "capm", "code": "CAPM", "name": "Certified Associate in Project Management (CAPM)®", "org": "PMI", "audience": "Juniors et futurs chefs de projet", "point": "Couvre les 23 h de formation exigées par le PMI", "accent": "#fbbf24" },
+  { "slug": "pmi-acp", "code": "PMI-ACP", "name": "PMI Agile Certified Practitioner (PMI-ACP)®", "org": "PMI", "audience": "Chefs de projet et équipes agiles", "point": "Scrum, Kanban, Lean et approches hybrides", "accent": "#fbbf24" },
+  { "slug": "cpmai", "code": "CPMAI", "name": "Cognitive Project Management for AI (CPMAI)™", "org": "PMI", "audience": "Chefs de projet data & IA", "point": "Une méthode pour piloter les projets d’IA", "accent": "#fbbf24" },
+  { "slug": "pgmp", "code": "PgMP", "name": "Program Management Professional (PgMP)®", "org": "PMI", "audience": "Directeurs et managers de programme", "point": "Pilotage et gouvernance de programmes", "accent": "#fbbf24" },
+
+  { "slug": "psm", "code": "PSM", "name": "Professional Scrum Master™", "org": "Scrum.org", "audience": "Scrum Masters et coachs agiles", "point": "Préparation à l’examen PSM I", "accent": "#38bdf8" },
+  { "slug": "pspo", "code": "PSPO", "name": "Professional Scrum Product Owner™", "org": "Scrum.org", "audience": "Product Owners et chefs de produit", "point": "Maximiser la valeur du produit", "accent": "#38bdf8" },
+  { "slug": "psk", "code": "PSK", "name": "Professional Scrum with Kanban™", "org": "Scrum.org", "audience": "Équipes Scrum qui veulent fluidifier leur travail", "point": "Les pratiques Kanban au cœur de Scrum", "accent": "#38bdf8" },
+  { "slug": "psd", "code": "PSD", "name": "Professional Scrum Developer™", "org": "Scrum.org", "audience": "Développeurs en équipe Scrum", "point": "Les pratiques d’ingénierie agile", "accent": "#38bdf8" },
+
+  { "slug": "safe-sa", "code": "SAFe SA", "name": "Leading SAFe® – SAFe® Agilist", "org": "Scaled Agile", "audience": "Managers, dirigeants et leaders", "point": "L’agilité à l’échelle de l’entreprise", "accent": "#a78bfa" },
+  { "slug": "safe-rte", "code": "SAFe RTE", "name": "SAFe® Release Train Engineer", "org": "Scaled Agile", "audience": "RTE et Scrum Masters confirmés", "point": "Faciliter l’ART et le PI Planning", "accent": "#a78bfa" },
+  { "slug": "safe-popm", "code": "SAFe POPM", "name": "SAFe® Product Owner / Product Manager", "org": "Scaled Agile", "audience": "Product Owners et Product Managers", "point": "Backlogs, PI Planning et livraison de valeur", "accent": "#a78bfa" },
+  { "slug": "safe-lpm", "code": "SAFe LPM", "name": "SAFe® Lean Portfolio Management", "org": "Scaled Agile", "audience": "PMO et responsables de portefeuille", "point": "Stratégie, financement et gouvernance Lean", "accent": "#a78bfa" },
+
+  { "slug": "prince2", "code": "PRINCE2 7", "name": "PRINCE2® 7e édition", "org": "PeopleCert", "audience": "Chefs de projet et PMO", "point": "Niveaux Foundation et Practitioner", "accent": "#34d399" },
+  { "slug": "prince2-agile", "code": "PRINCE2 Agile", "name": "PRINCE2 Agile®", "org": "PeopleCert", "audience": "Chefs de projet en contexte agile", "point": "La gouvernance PRINCE2 alliée à l’agilité", "accent": "#34d399" },
+  { "slug": "itil4", "code": "ITIL 4", "name": "ITIL® 4", "org": "PeopleCert", "audience": "Équipes IT et gestion des services", "point": "Le système de valeur des services", "accent": "#34d399" },
+  { "slug": "itil5", "code": "ITIL 5", "name": "ITIL® version 5", "org": "PeopleCert", "audience": "Équipes IT et responsables des services", "point": "La nouvelle version du référentiel ITIL", "accent": "#34d399" },
+  { "slug": "devops", "code": "DevOps", "name": "DevOps Fundamentals", "org": "PeopleCert", "audience": "Équipes Dev, Ops et managers IT", "point": "Culture, flux et automatisation", "accent": "#34d399" },
+
+  { "slug": "istqb-foundation", "code": "ISTQB CTFL", "name": "ISTQB® Certified Tester Foundation Level", "org": "ISTQB®", "audience": "Testeurs, QA et développeurs", "point": "Les fondamentaux du test logiciel", "accent": "#f472b6" },
+  { "slug": "istqb-agile", "code": "ISTQB Agile", "name": "ISTQB® Agile Tester", "org": "ISTQB®", "audience": "Testeurs en équipe agile", "point": "Le test au cœur des équipes agiles", "accent": "#f472b6" },
+  { "slug": "istqb-automation", "code": "ISTQB TAE", "name": "ISTQB® Test Automation Engineering", "org": "ISTQB®", "audience": "Ingénieurs QA et automaticiens", "point": "Architecture et stratégie d’automatisation", "accent": "#f472b6" },
+
+  { "slug": "jira", "code": "Jira", "name": "Jira – Atlassian", "org": "Atlassian", "audience": "Équipes projet, agiles et PMO", "point": "Configurer et piloter vos projets dans Jira", "accent": "#60a5fa" }
+]
