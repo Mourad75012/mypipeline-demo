@@ -1,11 +1,11 @@
 ---
 name: prospection-organismes-formation
-description: Prospection B2B d'un formateur indépendant en gestion de projet (plus de 4000 candidats formés, 93 % de réussite ; PMP, CAPM, PMI-ACP, CPMAI, PgMP, PSM, PSPO, PSK, PSD, SAFe SA/SSM/RTE/POPM/LPM, PRINCE2 v7, PRINCE2 Agile, ITIL 4/5, ISTQB, DevOps PeopleCert, Jira Atlassian) auprès d'organismes de formation, ESN/SSII, cabinets de conseil et responsables formation. À utiliser pour cibler des prospects, qualifier des leads, rédiger des messages LinkedIn/emails de prospection, des relances, une proposition de collaboration (sous-traitance, portage, co-animation) ou un suivi de pipeline commercial.
+description: Prospection B2B d'un formateur indépendant en gestion de projet (ATP PMI, ATO PeopleCert ; plus de 4000 candidats formés, 93 % de réussite ; PMP, CAPM, PMI-ACP, CPMAI, PgMP, PSM, PSPO, PSK, PSD, SAFe SA/SSM/RTE/POPM/LPM, PRINCE2 v7 Foundation/Practitioner, PRINCE2 Agile, ITIL 4/5, ISTQB, DevOps PeopleCert, Jira Atlassian) auprès d'organismes de formation, ESN/SSII, cabinets de conseil et responsables formation. À utiliser pour cibler des prospects, qualifier des leads, rédiger des messages LinkedIn/emails de prospection, des relances, une proposition de collaboration (sous-traitance, portage, co-animation) ou un suivi de pipeline commercial.
 ---
 
 # Prospection organismes de formation
 
-Ce skill aide un **formateur international certifié (ATP / ATO / SAFe SPC)** à générer des missions de formation certifiante auprès de donneurs d'ordre B2B.
+Ce skill aide un **formateur international accrédité (ATP PMI, ATO PeopleCert)** à générer des missions de formation certifiante auprès de donneurs d'ordre B2B.
 
 ## Quand l'utiliser
 
@@ -19,19 +19,19 @@ Ce skill aide un **formateur international certifié (ATP / ATO / SAFe SPC)** à
 
 | Famille | Certifications | Organismes |
 |---|---|---|
-| PMI | PMP, CAPM, PMI-ACP, PgMP, CPMAI | PMI (ATP) |
+| PMI | PMP, CAPM, PMI-ACP (accrédité ATP) ; PgMP, CPMAI | PMI (ATP) |
 | Scrum.org | PSM, PSPO, PSK, PSD | Scrum.org |
-| SAFe | AI-Empowered SAFe Agilist (SA), SSM, POPM, RTE, LPM | Scaled Agile (SPC) |
-| PeopleCert / Axelos | PRINCE2 Foundation v7, PRINCE2 Agile, ITIL 5 Foundation, ITIL 4, DevOps Foundation | PeopleCert (ATO) |
+| SAFe | AI-Empowered SAFe Agilist (SA), SAFe Scrum Master (SSM), POPM, RTE, LPM | Scaled Agile ([statut à confirmer]) |
+| PeopleCert / Axelos | ITIL 4, ITIL 5, PRINCE2 v7 Foundation et Practitioner (accrédité ATO) ; PRINCE2 Agile, DevOps Foundation | PeopleCert (ATO) |
 | Test logiciel | ISTQB Fondation, Agile Tester, Test Automation | ISTQB |
 | Outils | Jira / Atlassian | Atlassian |
 
 ### Formations phares (à mettre en avant en priorité)
 
 - **PMI** : PMP, CAPM, PMI-ACP
-- **SAFe** : AI-Empowered SAFe Agilist, POPM, RTE, SSM
+- **SAFe** : AI-Empowered SAFe Agilist, POPM, RTE, SAFe Scrum Master (SSM)
 - **Scrum.org** : PSM, PSPO, PSK, PSD
-- **Fondations** : PRINCE2 Foundation v7, ITIL 5 Foundation, ISTQB Foundation, DevOps Foundation
+- **PeopleCert / fondations** : PRINCE2 v7 Foundation et Practitioner, ITIL 5 Foundation, ISTQB Foundation, DevOps Foundation
 
 ### Preuves vérifiées (confirmées par l'utilisateur)
 
@@ -40,7 +40,16 @@ Ce skill aide un **formateur international certifié (ATP / ATO / SAFe SPC)** à
 - **Bilingue français / anglais.**
 - **Interventions internationales** : France, Belgique, Allemagne, Espagne, Tunisie, Côte d'Ivoire, Madagascar, Gambie, entre autres.
 
-Utiliser ces chiffres tels quels : « plus de 4000 candidats », « 93 % de réussite ». Ne pas les arrondir ni les gonfler. Pour toute autre donnée (accréditations précises, références clients, tarifs, formats présentiel / distanciel, vouchers d'examen, Qualiopi des partenaires), ne jamais inventer : demander à l'utilisateur ou laisser un champ `[à compléter]`.
+- **Accréditations** : ATP PMI (PMP, CAPM, PMI-ACP) ; ATO PeopleCert (ITIL 4, ITIL 5, PRINCE2 v7 Foundation et Practitioner). Le statut SAFe n'est pas encore confirmé : écrire « formateur SAFe » sans citer de titre (SPC…) tant que l'utilisateur ne l'a pas précisé.
+- **Références clients** : O2 Formation, Actinium SAM, Syntaxio, Demos, PLB, M2I Formation (liste non exhaustive). Orthographe à valider par l'utilisateur avant envoi.
+- **Formats** : présentiel, distanciel et hybride.
+- **Sous-traitance** : acceptée, dans une logique gagnant-gagnant (renfort, marque blanche, co-animation).
+
+Utiliser ces chiffres tels quels : « plus de 4000 candidats », « 93 % de réussite ». Ne pas les arrondir ni les gonfler. Citer au plus 2 ou 3 références clients par message, en choisissant celles du même secteur que le prospect, et **ne jamais citer un client concurrent direct du prospect sans accord de l'utilisateur**. Pour toute autre donnée (tarifs, vouchers d'examen, Qualiopi des partenaires), ne jamais inventer : demander à l'utilisateur ou laisser un champ `[à compléter]`.
+
+### Coordonnées (signature)
+
+Mourad · mouannes@hotmail.fr · 06 64 71 24 28 · [Lien LinkedIn]
 
 Choisir la preuve selon la cible : le **taux de réussite** pour les organismes de formation et les responsables formation, le **volume de candidats** pour les ESN et les grands comptes, la **couverture internationale bilingue** pour les cibles à l'étranger (Afrique francophone, Europe) et les groupes multi-pays.
 
