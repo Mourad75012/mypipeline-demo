@@ -1,6 +1,6 @@
 ---
 name: prospection-organismes-formation
-description: Prospection B2B d'un formateur indépendant en gestion de projet (PMP, CAPM, PMI-ACP, CPMAI, PgMP, PSM, PSPO, PSK, PSD, SAFe SA/RTE/POPM/LPM, PRINCE2 v7, PRINCE2 Agile, ITIL 4/5, ISTQB, DevOps PeopleCert, Jira Atlassian) auprès d'organismes de formation, ESN/SSII, cabinets de conseil et responsables formation. À utiliser pour cibler des prospects, qualifier des leads, rédiger des messages LinkedIn/emails de prospection, des relances, une proposition de collaboration (sous-traitance, portage, co-animation) ou un suivi de pipeline commercial.
+description: Prospection B2B d'un formateur indépendant en gestion de projet (plus de 4000 candidats formés, 93 % de réussite ; PMP, CAPM, PMI-ACP, CPMAI, PgMP, PSM, PSPO, PSK, PSD, SAFe SA/SSM/RTE/POPM/LPM, PRINCE2 v7, PRINCE2 Agile, ITIL 4/5, ISTQB, DevOps PeopleCert, Jira Atlassian) auprès d'organismes de formation, ESN/SSII, cabinets de conseil et responsables formation. À utiliser pour cibler des prospects, qualifier des leads, rédiger des messages LinkedIn/emails de prospection, des relances, une proposition de collaboration (sous-traitance, portage, co-animation) ou un suivi de pipeline commercial.
 ---
 
 # Prospection organismes de formation
@@ -21,12 +21,28 @@ Ce skill aide un **formateur international certifié (ATP / ATO / SAFe SPC)** à
 |---|---|---|
 | PMI | PMP, CAPM, PMI-ACP, PgMP, CPMAI | PMI (ATP) |
 | Scrum.org | PSM, PSPO, PSK, PSD | Scrum.org |
-| SAFe | SA, RTE, POPM, LPM | Scaled Agile (SPC) |
-| PeopleCert / Axelos | PRINCE2 v7, PRINCE2 Agile, ITIL 4 / ITIL 5, DevOps | PeopleCert (ATO) |
+| SAFe | AI-Empowered SAFe Agilist (SA), SSM, POPM, RTE, LPM | Scaled Agile (SPC) |
+| PeopleCert / Axelos | PRINCE2 Foundation v7, PRINCE2 Agile, ITIL 5 Foundation, ITIL 4, DevOps Foundation | PeopleCert (ATO) |
 | Test logiciel | ISTQB Fondation, Agile Tester, Test Automation | ISTQB |
 | Outils | Jira / Atlassian | Atlassian |
 
-Arguments différenciants à mettre en avant, **uniquement s'ils sont vérifiés par l'utilisateur** : accréditations actives, taux de réussite, nombre de stagiaires formés, langues d'animation, présentiel / distanciel, pays couverts, capacité à fournir supports officiels et vouchers d'examen, conformité Qualiopi des partenaires. Ne jamais inventer de chiffre : demander la donnée ou laisser un champ `[à compléter]`.
+### Formations phares (à mettre en avant en priorité)
+
+- **PMI** : PMP, CAPM, PMI-ACP
+- **SAFe** : AI-Empowered SAFe Agilist, POPM, RTE, SSM
+- **Scrum.org** : PSM, PSPO, PSK, PSD
+- **Fondations** : PRINCE2 Foundation v7, ITIL 5 Foundation, ISTQB Foundation, DevOps Foundation
+
+### Preuves vérifiées (confirmées par l'utilisateur)
+
+- **Plus de 4000 candidats formés.**
+- **93 % de taux de réussite** aux examens de certification.
+- **Bilingue français / anglais.**
+- **Interventions internationales** : France, Belgique, Allemagne, Espagne, Tunisie, Côte d'Ivoire, Madagascar, Gambie, entre autres.
+
+Utiliser ces chiffres tels quels : « plus de 4000 candidats », « 93 % de réussite ». Ne pas les arrondir ni les gonfler. Pour toute autre donnée (accréditations précises, références clients, tarifs, formats présentiel / distanciel, vouchers d'examen, Qualiopi des partenaires), ne jamais inventer : demander à l'utilisateur ou laisser un champ `[à compléter]`.
+
+Choisir la preuve selon la cible : le **taux de réussite** pour les organismes de formation et les responsables formation, le **volume de candidats** pour les ESN et les grands comptes, la **couverture internationale bilingue** pour les cibles à l'étranger (Afrique francophone, Europe) et les groupes multi-pays.
 
 ## Cibles (ICP)
 
@@ -70,7 +86,8 @@ Colonnes : `Organisation | Type | Contact | Fonction | Certification visée | Sc
 - Parler du problème du prospect (sessions à pourvoir, taux de réussite, délai) avant de parler de soi.
 - Une seule question ou proposition finale, facile à accepter (« 15 min la semaine prochaine ? »).
 - Éviter le jargon commercial et les superlatifs (« leader », « meilleur », « unique »).
-- Proposer des versions FR et EN si la cible est internationale.
+- Proposer des versions FR et EN si la cible est internationale (anglais pour l'Allemagne, la Gambie et les groupes internationaux).
+- Placer au plus une preuve chiffrée par message, dans la deuxième phrase.
 
 ## Conformité
 

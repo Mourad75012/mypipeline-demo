@@ -2,9 +2,11 @@
 
 Remplacer les éléments entre crochets. Ne garder que les arguments vérifiés.
 
+Preuves vérifiées : plus de 4000 candidats formés, 93 % de réussite, bilingue FR / EN, interventions en France, Belgique, Allemagne, Espagne, Tunisie, Côte d'Ivoire, Madagascar, Gambie.
+
 ## 1. Note d'invitation LinkedIn (≤ 300 caractères)
 
-> Bonjour [Prénom], je suis formateur accrédité [PMP / SAFe / PRINCE2…] et j'interviens pour des organismes comme [type de structure]. J'ai vu [signal : votre catalogue / votre publication sur …]. Ravi d'échanger avec vous.
+> Bonjour [Prénom], formateur accrédité [PMP / SAFe / PRINCE2…], j'ai préparé plus de 4000 candidats (93 % de réussite). J'ai vu [signal : votre catalogue / votre publication sur …]. Ravi d'échanger avec vous.
 
 ## 2. Premier message, organisme de formation
 
@@ -12,7 +14,7 @@ Remplacer les éléments entre crochets. Ne garder que les arguments vérifiés.
 >
 > Merci pour la connexion. Je vois que [Organisme] propose [certification] dans son catalogue.
 >
-> J'anime ces formations en tant que formateur accrédité [ATP PMI / ATO PeopleCert / SAFe SPC], en présentiel et à distance, en [langues]. J'interviens régulièrement en sous-traitance pour des organismes qui ont besoin de renfort sur des sessions planifiées ou des demandes intra.
+> J'anime ces formations en tant que formateur accrédité [ATP PMI / ATO PeopleCert / SAFe SPC], en français et en anglais : plus de 4000 candidats préparés, avec 93 % de réussite aux examens. J'interviens régulièrement en sous-traitance pour des organismes qui ont besoin de renfort sur des sessions planifiées ou des demandes intra.
 >
 > Seriez-vous ouvert(e) à un échange de 15 minutes pour voir si je peux vous aider sur vos prochaines sessions ?
 
@@ -22,7 +24,7 @@ Remplacer les éléments entre crochets. Ne garder que les arguments vérifiés.
 >
 > Avec [nombre / croissance / projets] chez [ESN], la certification de vos consultants en [SAFe / PSM / ISTQB / ITIL] est souvent un levier de staffing et de positionnement chez les clients.
 >
-> Je suis formateur accrédité sur ces certifications et j'organise des sessions intra adaptées au planning des consultants (format court, distanciel possible, préparation à l'examen incluse).
+> Je suis formateur accrédité sur ces certifications (plus de 4000 candidats formés) et j'organise des sessions intra adaptées au planning des consultants (format court, distanciel possible, préparation à l'examen incluse).
 >
 > Est-ce un sujet pour vous en [trimestre] ?
 
@@ -42,7 +44,7 @@ Remplacer les éléments entre crochets. Ne garder que les arguments vérifiés.
 >
 > Je me permets de vous contacter au sujet de [plan de développement des compétences / projet de transformation] chez [Entreprise].
 >
-> Formateur accrédité [accréditations], j'accompagne des équipes vers les certifications [liste courte] avec un dispositif intra : préparation, examen blanc et passage de l'examen.
+> Formateur accrédité [accréditations], j'ai accompagné plus de 4000 candidats vers les certifications [liste courte], avec 93 % de réussite, grâce à un dispositif intra : préparation, examen blanc et passage de l'examen.
 >
 > Auriez-vous 15 minutes la semaine du [date] pour en parler ?
 >
@@ -50,6 +52,14 @@ Remplacer les éléments entre crochets. Ne garder que les arguments vérifiés.
 > [Nom] · [Téléphone] · [Lien LinkedIn]
 >
 > *Si vous ne souhaitez plus recevoir de messages de ma part, répondez simplement STOP.*
+
+## 5 bis. Message en anglais (cibles internationales)
+
+> Hello [First name],
+>
+> I noticed [Organisation] offers [certification] in [country]. I'm an accredited [PMI ATP / PeopleCert ATO / SAFe SPC] trainer and have prepared over 4,000 candidates, with a 93% exam pass rate, delivering in English and French across Europe and Africa.
+>
+> I often support training providers as a subcontract or white-label trainer. Would you be open to a 15-minute call to discuss your upcoming sessions?
 
 ## 6. Relance à valeur ajoutée (J+14)
 
@@ -63,7 +73,8 @@ Remplacer les éléments entre crochets. Ne garder que les arguments vérifiés.
 
 | Objection | Réponse |
 |---|---|
-| « Nous avons déjà nos formateurs. » | Je comprends. Je peux servir de renfort en période chargée ou sur des certifications que vos formateurs ne couvrent pas (ex. [SAFe RTE, PgMP, CPMAI]). Puis-je vous envoyer mes disponibilités ? |
+| « Nous avons déjà nos formateurs. » | Je comprends. Je peux servir de renfort en période chargée, sur des sessions en anglais ou à l'international, ou sur des certifications que vos formateurs ne couvrent pas (ex. SAFe RTE, PMI-ACP, PSK). Puis-je vous envoyer mes disponibilités ? |
+| « Qu'est-ce qui vous distingue ? » | 93 % de réussite sur plus de 4000 candidats, en français et en anglais, dans [nombre] pays. Je peux vous présenter la méthode de préparation à l'examen que j'utilise. |
 | « Pas de budget actuellement. » | Quand votre plan de formation [année] est-il arrêté ? Je vous recontacte à ce moment-là. |
 | « Envoyez-moi une plaquette. » | Avec plaisir. Pour vous envoyer la bonne, quelle certification et quel format vous intéressent le plus ? |
 | « Quel est votre tarif ? » | Il dépend du format (inter / intra / sous-traitance) et de la durée. Pour [certification] en [format], je vous fais une proposition précise sous 48 h. |
