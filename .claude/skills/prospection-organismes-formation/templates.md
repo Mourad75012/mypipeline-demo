@@ -2,7 +2,7 @@
 
 Remplacer les éléments entre crochets. Ne garder que les arguments vérifiés.
 
-Preuves vérifiées : ATP PMI, ATO PeopleCert, plus de 4000 candidats formés, 93 % de réussite, références (O2 Formation, Actinium SAM, Syntaxio, Demos, PLB, M2I Formation), présentiel / distanciel / hybride, bilingue FR / EN, interventions en France, Belgique, Allemagne, Espagne, Tunisie, Côte d'Ivoire, Madagascar, Gambie.
+Preuves vérifiées : ATP PMI, ATO PeopleCert, SAFe Advanced SPC (A-SPC), plus de 4000 candidats formés, 93 % de réussite, références (O2 Formation, Actinium SAM, Syntaxio, Demos, PLB, M2I Formation), présentiel / distanciel / hybride, bilingue FR / EN, interventions en France, Belgique, Allemagne, Espagne, Tunisie, Côte d'Ivoire, Madagascar, Gambie.
 
 ## 1. Note d'invitation LinkedIn (≤ 300 caractères)
 
@@ -14,7 +14,7 @@ Preuves vérifiées : ATP PMI, ATO PeopleCert, plus de 4000 candidats formés, 9
 >
 > Merci pour la connexion. Je vois que [Organisme] propose [certification] dans son catalogue.
 >
-> J'anime ces formations en tant que formateur accrédité [ATP PMI / ATO PeopleCert], en français et en anglais, en présentiel, à distance ou en hybride : plus de 4000 candidats préparés, avec 93 % de réussite aux examens. J'interviens déjà en sous-traitance pour des organismes comme [2 ou 3 références : Demos, PLB, M2I Formation…], dans une logique gagnant-gagnant.
+> J'anime ces formations en tant que formateur accrédité [ATP PMI / ATO PeopleCert / SAFe Advanced SPC], en français et en anglais, en présentiel, à distance ou en hybride : plus de 4000 candidats préparés, avec 93 % de réussite aux examens. J'interviens déjà en sous-traitance pour des organismes comme [2 ou 3 références : Demos, PLB, M2I Formation…], dans une logique gagnant-gagnant.
 >
 > Seriez-vous ouvert(e) à un échange de 15 minutes pour voir si je peux vous aider sur vos prochaines sessions ?
 
@@ -57,7 +57,7 @@ Preuves vérifiées : ATP PMI, ATO PeopleCert, plus de 4000 candidats formés, 9
 
 > Hello [First name],
 >
-> I noticed [Organisation] offers [certification] in [country]. I'm an accredited [PMI ATP / PeopleCert ATO] trainer and have prepared over 4,000 candidates, with a 93% exam pass rate, delivering in English and French, on-site, remote or hybrid, across Europe and Africa.
+> I noticed [Organisation] offers [certification] in [country]. I'm an accredited [PMI ATP / PeopleCert ATO / SAFe Advanced SPC] trainer and have prepared over 4,000 candidates, with a 93% exam pass rate, delivering in English and French, on-site, remote or hybrid, across Europe and Africa.
 >
 > I regularly work as a subcontract or white-label trainer for training providers such as [Demos, PLB, M2I Formation]. Would you be open to a 15-minute call to discuss your upcoming sessions?
 
