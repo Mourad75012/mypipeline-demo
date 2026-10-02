@@ -2,7 +2,7 @@
 
 Remplacer les éléments entre crochets. Ne garder que les arguments vérifiés.
 
-Preuves vérifiées : ATP PMI, ATO PeopleCert, SAFe Advanced SPC (A-SPC), plus de 4000 candidats formés, 93 % de réussite, références (O2 Formation, Actinium SAM, Syntaxio, Demos, PLB, M2I Formation), présentiel / distanciel / hybride, bilingue FR / EN, interventions en France, Belgique, Allemagne, Espagne, Tunisie, Côte d'Ivoire, Madagascar, Gambie.
+Preuves vérifiées : ATP PMI, ATO PeopleCert, SAFe Advanced SPC (A-SPC), plus de 4000 candidats formés, 93 % de réussite, références (Oo2 Formation, Actinium SAM, Syntaxio, Demos, PLB, M2I Formation), présentiel / distanciel / hybride, bilingue FR / EN, interventions en France, Belgique, Allemagne, Espagne, Tunisie, Côte d'Ivoire, Madagascar, Gambie.
 
 ## 1. Note d'invitation LinkedIn (≤ 300 caractères)
 

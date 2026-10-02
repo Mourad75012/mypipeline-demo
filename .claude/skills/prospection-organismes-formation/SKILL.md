@@ -41,7 +41,7 @@ Ce skill aide un **formateur international accrédité (ATP PMI, ATO PeopleCert,
 - **Interventions internationales** : France, Belgique, Allemagne, Espagne, Tunisie, Côte d'Ivoire, Madagascar, Gambie, entre autres.
 
 - **Accréditations** : ATP PMI (PMP, CAPM, PMI-ACP) ; ATO PeopleCert (ITIL 4, ITIL 5, PRINCE2 v7 Foundation et Practitioner). SAFe Advanced SPC (A-SPC), habilité à animer les formations SAFe certifiantes (SA, SSM, POPM, RTE, LPM…).
-- **Références clients** : O2 Formation, Actinium SAM, Syntaxio, Demos, PLB, M2I Formation (liste non exhaustive). Orthographe à valider par l'utilisateur avant envoi.
+- **Références clients** : Oo2 Formation, Actinium SAM, Syntaxio, Demos, PLB, M2I Formation (liste non exhaustive). Orthographe d’Actinium SAM à valider avant envoi.
 - **Formats** : présentiel, distanciel et hybride.
 - **Sous-traitance** : acceptée, dans une logique gagnant-gagnant (renfort, marque blanche, co-animation).
 
