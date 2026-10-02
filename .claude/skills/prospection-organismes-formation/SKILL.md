@@ -49,7 +49,7 @@ Utiliser ces chiffres tels quels : « plus de 4000 candidats », « 93 % de réu
 
 ### Coordonnées (signature)
 
-Mourad · mouannes@hotmail.fr · 06 64 71 24 28 · [Lien LinkedIn]
+Mourad · mouannes@hotmail.fr · 06 64 71 24 28 · linkedin.com/in/mouradouannes
 
 Choisir la preuve selon la cible : le **taux de réussite** pour les organismes de formation et les responsables formation, le **volume de candidats** pour les ESN et les grands comptes, la **couverture internationale bilingue** pour les cibles à l'étranger (Afrique francophone, Europe) et les groupes multi-pays.
 

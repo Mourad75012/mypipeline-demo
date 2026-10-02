@@ -49,7 +49,7 @@ Preuves vérifiées : ATP PMI, ATO PeopleCert, SAFe Advanced SPC (A-SPC), plus d
 > Auriez-vous 15 minutes la semaine du [date] pour en parler ?
 >
 > Bien cordialement,
-> Mourad · mouannes@hotmail.fr · 06 64 71 24 28 · [Lien LinkedIn]
+> Mourad · mouannes@hotmail.fr · 06 64 71 24 28 · linkedin.com/in/mouradouannes
 >
 > *Si vous ne souhaitez plus recevoir de messages de ma part, répondez simplement STOP.*
 
