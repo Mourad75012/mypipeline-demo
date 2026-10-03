@@ -1,4 +1,23 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_FLOW_V3_ENABLED": "true",
+    "CLAUDE_FLOW_HOOKS_ENABLED": "true",
+    "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npx @claude-flow*)",
+      "Bash(npx claude-flow*)",
+      "Bash(node .claude/*)",
+      "mcp__claude-flow__*"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  },
+  "model": "claude-sonnet-5",
   "hooks": {
     "PreToolUse": [
       {
@@ -161,24 +180,18 @@
     "type": "command",
     "command": "sh -c 'D=\"${CLAUDE_PROJECT_DIR:-.}\"; [ -f \"$D/.claude/helpers/statusline.cjs\" ] || D=\"${HOME}\"; exec node \"$D/.claude/helpers/statusline.cjs\"'"
   },
-  "permissions": {
-    "allow": [
-      "Bash(npx @claude-flow*)",
-      "Bash(npx claude-flow*)",
-      "Bash(node .claude/*)",
-      "mcp__claude-flow__*"
-    ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)"
-    ]
+  "enabledPlugins": {
+    "ruflo-mods@ruflo": true,
+    "ruflo-swarm@ruflo": true,
+    "ruflo-console@ruflo": true
   },
-  "model": "claude-sonnet-5",
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_FLOW_V3_ENABLED": "true",
-    "CLAUDE_FLOW_HOOKS_ENABLED": "true",
-    "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1"
+  "extraKnownMarketplaces": {
+    "ruflo": {
+      "source": {
+        "source": "github",
+        "repo": "ruvnet/ruflo"
+      }
+    }
   },
   "claudeFlow": {
     "version": "3.0.0",
@@ -282,19 +295,6 @@
       "scanOnEdit": true,
       "cveCheck": true,
       "threatModel": true
-    }
-  },
-  "enabledPlugins": {
-    "ruflo-mods@ruflo": true,
-    "ruflo-swarm@ruflo": true,
-    "ruflo-console@ruflo": true
-  },
-  "extraKnownMarketplaces": {
-    "ruflo": {
-      "source": {
-        "source": "github",
-        "repo": "ruvnet/ruflo"
-      }
     }
   }
 }
