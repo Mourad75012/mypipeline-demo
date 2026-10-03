@@ -3,6 +3,10 @@
     "agent-native-assets": {
       "type": "http",
       "url": "https://assets.agent-native.com/_agent-native/mcp"
+    },
+    "claude-flow": {
+      "command": "npx",
+      "args": ["ruflo@latest", "mcp", "start"]
     }
   }
 }
