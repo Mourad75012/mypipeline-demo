@@ -6,7 +6,18 @@
     },
     "claude-flow": {
       "command": "npx",
-      "args": ["ruflo@latest", "mcp", "start"]
+      "args": [
+        "ruflo@latest",
+        "mcp",
+        "start"
+      ]
+    },
+    "scrapegraph-mcp": {
+      "type": "http",
+      "url": "https://sgai-mcp-main.onrender.com",
+      "headers": {
+        "X-API-Key": "${SGAI_API_KEY}"
+      }
     }
   }
 }
