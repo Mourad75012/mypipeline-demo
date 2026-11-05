@@ -183,7 +183,8 @@
   "enabledPlugins": {
     "ruflo-mods@ruflo": true,
     "ruflo-swarm@ruflo": true,
-    "ruflo-console@ruflo": true
+    "ruflo-console@ruflo": true,
+    "ecc@ecc": true
   },
   "extraKnownMarketplaces": {
     "ruflo": {
