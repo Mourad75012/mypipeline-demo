@@ -7,3 +7,6 @@
 .claude-flow/data/
 .claude-flow/logs/
 .claude-flow/sessions/
+
+# Dependencies
+node_modules/
