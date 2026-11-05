@@ -191,6 +191,12 @@
         "source": "github",
         "repo": "ruvnet/ruflo"
       }
+    },
+    "ecc": {
+      "source": {
+        "source": "github",
+        "repo": "affaan-m/ECC"
+      }
     }
   },
   "claudeFlow": {
