@@ -147,6 +147,17 @@ Déroulé : J1 visite du profil + vrai commentaire sur un post récent ; J2-3 in
 
 ---
 
+## Configuration Gojiberry (2026-11-11)
+| Élément | ID | État |
+|---------|----|------|
+| Campagne « ESN & Grands comptes · Responsables formation (intra) » | 49856 | En pause ; messages fixes (version intra adaptée ESN + grands comptes) ; liste 70659 (74 contacts) |
+| Campagne « Organismes de formation · Sous-traitance » | 49905 | Inactive ; revue manuelle des leads ; fr-FR ; liste 70700 |
+| Agent de sourcing « Organismes de formation · FR-BE-CH » | 44527 | Actif ; alimente la liste 70700 ; partenaires (M2i, QRP, Sparks, ACTINUUM, Simplilearn, Next Formation) exclus ; page M2i retirée des signaux |
+| Liste « Head of Learning… France » | 70627 | Détachée de toute campagne (cible trop large, hors France) |
+| Boîte email | 12605 | Gmail, chauffe en cours, 2 emails/jour |
+
+À faire dans l'interface Gojiberry : saisir les objets des 2 emails de la campagne 49856 (« certification équipes projet », « format intra ») — l'API ne les enregistre pas ; désactiver le suivi des ouvertures sur la boîte 12605.
+
 ## Prochaines étapes
 1. Réparer le connecteur Gojiberry (nouvelle clé dans claude.ai → Connecteurs, puis nouvelle session).
 2. Rechercher les prospects (responsables pédagogiques OF, responsables formation ESN) — recherche gratuite, révélation avec accord.
