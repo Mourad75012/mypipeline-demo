@@ -165,10 +165,50 @@
         "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
       },
       "hash": "sha256:a6b623de7d21570c1dfd093db38a474cab3bca0ef0dddda26d63f1a509938e5c"
+    },
+    {
+      "payload": {
+        "receiptId": "sha256:4212d6252a66d6239480676ddecaab8781d50f50fd7c7c2d43a6e9652777b105",
+        "previousReceiptHash": "sha256:a6b623de7d21570c1dfd093db38a474cab3bca0ef0dddda26d63f1a509938e5c",
+        "sequence": 4,
+        "issuedAt": 1794408970751,
+        "request": {
+          "identity": {
+            "id": "legacy-cli",
+            "type": "legacy"
+          },
+          "action": {
+            "type": "mcp.tool.call",
+            "resource": "hooks_intelligence_verified-ingest",
+            "tool": "hooks_intelligence_verified-ingest",
+            "server": "ruflo",
+            "network": false,
+            "destructive": false
+          },
+          "context": {
+            "metadata": {
+              "inputDigest": "sha256:b72ed13cb525af2592de7b88e763277fa14592edc468666510c59a8cf02dd505"
+            },
+            "now": 1794408970751
+          },
+          "requestId": "f7ed3762-001f-4579-a1e9-81f526db5a69"
+        },
+        "decision": {
+          "requestId": "f7ed3762-001f-4579-a1e9-81f526db5a69",
+          "outcome": "allowed",
+          "enforcedOutcome": "allowed",
+          "mode": "legacy",
+          "reason": "legacy-default-allow",
+          "matchedRules": [],
+          "obligations": []
+        },
+        "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
+      },
+      "hash": "sha256:37bf40de6b64c8d2b90bc827af86dabf10e9ad84467dead9c281a16fa05c11ba"
     }
   ],
   "migratedAt": 1794335628721,
   "migratedFrom": "pre-ADR-324; capabilities=.swarm/memory.db",
-  "ledgerLength": 4,
-  "ledgerHead": "sha256:a6b623de7d21570c1dfd093db38a474cab3bca0ef0dddda26d63f1a509938e5c"
+  "ledgerLength": 5,
+  "ledgerHead": "sha256:37bf40de6b64c8d2b90bc827af86dabf10e9ad84467dead9c281a16fa05c11ba"
 }
