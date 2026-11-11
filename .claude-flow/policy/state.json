@@ -45,10 +45,50 @@
         "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
       },
       "hash": "sha256:3e9a9a3c84de81894789e0b5b3167ac6598a3542b452ac80c36470dfad93ba6c"
+    },
+    {
+      "payload": {
+        "receiptId": "sha256:1a4f2989f920d99a578965748958649f3347e25406c06d641616a2999ac3a2f8",
+        "previousReceiptHash": "sha256:3e9a9a3c84de81894789e0b5b3167ac6598a3542b452ac80c36470dfad93ba6c",
+        "sequence": 1,
+        "issuedAt": 1794404034713,
+        "request": {
+          "identity": {
+            "id": "legacy-cli",
+            "type": "legacy"
+          },
+          "action": {
+            "type": "mcp.tool.call",
+            "resource": "hooks_intelligence_verified-ingest",
+            "tool": "hooks_intelligence_verified-ingest",
+            "server": "ruflo",
+            "network": false,
+            "destructive": false
+          },
+          "context": {
+            "metadata": {
+              "inputDigest": "sha256:b72ed13cb525af2592de7b88e763277fa14592edc468666510c59a8cf02dd505"
+            },
+            "now": 1794404034713
+          },
+          "requestId": "b2ad152c-77be-4cb6-8598-8a00f7365204"
+        },
+        "decision": {
+          "requestId": "b2ad152c-77be-4cb6-8598-8a00f7365204",
+          "outcome": "allowed",
+          "enforcedOutcome": "allowed",
+          "mode": "legacy",
+          "reason": "legacy-default-allow",
+          "matchedRules": [],
+          "obligations": []
+        },
+        "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
+      },
+      "hash": "sha256:80d155acbf779555692b58efdfd07cb7c6f63707d97edb9a1ccab7a86d402615"
     }
   ],
   "migratedAt": 1794335628721,
   "migratedFrom": "pre-ADR-324; capabilities=.swarm/memory.db",
-  "ledgerHead": "sha256:3e9a9a3c84de81894789e0b5b3167ac6598a3542b452ac80c36470dfad93ba6c",
-  "ledgerLength": 1
+  "ledgerLength": 2,
+  "ledgerHead": "sha256:80d155acbf779555692b58efdfd07cb7c6f63707d97edb9a1ccab7a86d402615"
 }
