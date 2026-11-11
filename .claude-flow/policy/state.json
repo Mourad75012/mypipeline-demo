@@ -85,10 +85,50 @@
         "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
       },
       "hash": "sha256:80d155acbf779555692b58efdfd07cb7c6f63707d97edb9a1ccab7a86d402615"
+    },
+    {
+      "payload": {
+        "receiptId": "sha256:b9cfa714a3c6efd81738f683b16dc55d59e14bc269ef7869a5e6dcf324997832",
+        "previousReceiptHash": "sha256:80d155acbf779555692b58efdfd07cb7c6f63707d97edb9a1ccab7a86d402615",
+        "sequence": 2,
+        "issuedAt": 1794407100089,
+        "request": {
+          "identity": {
+            "id": "legacy-cli",
+            "type": "legacy"
+          },
+          "action": {
+            "type": "mcp.tool.call",
+            "resource": "hooks_intelligence_verified-ingest",
+            "tool": "hooks_intelligence_verified-ingest",
+            "server": "ruflo",
+            "network": false,
+            "destructive": false
+          },
+          "context": {
+            "metadata": {
+              "inputDigest": "sha256:b72ed13cb525af2592de7b88e763277fa14592edc468666510c59a8cf02dd505"
+            },
+            "now": 1794407100089
+          },
+          "requestId": "493e5490-988c-42d8-8922-cddbada924d2"
+        },
+        "decision": {
+          "requestId": "493e5490-988c-42d8-8922-cddbada924d2",
+          "outcome": "allowed",
+          "enforcedOutcome": "allowed",
+          "mode": "legacy",
+          "reason": "legacy-default-allow",
+          "matchedRules": [],
+          "obligations": []
+        },
+        "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
+      },
+      "hash": "sha256:1293ebaf1a3dae7b74d86d2a323b0f04898454d907210dd5fb672e3d7f51b0fa"
     }
   ],
   "migratedAt": 1794335628721,
   "migratedFrom": "pre-ADR-324; capabilities=.swarm/memory.db",
-  "ledgerLength": 2,
-  "ledgerHead": "sha256:80d155acbf779555692b58efdfd07cb7c6f63707d97edb9a1ccab7a86d402615"
+  "ledgerLength": 3,
+  "ledgerHead": "sha256:1293ebaf1a3dae7b74d86d2a323b0f04898454d907210dd5fb672e3d7f51b0fa"
 }
