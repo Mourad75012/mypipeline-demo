@@ -1,6 +1,6 @@
 # Product Marketing Context — MED TRAINING & CONSULTING
 
-**Document version:** v2
+**Document version:** v3
 **Last updated:** 2026-11-11
 **Fondateur / formateur :** Mourad OUANNES
 **Usage :** prospection B2B, site internet, LinkedIn, outils d'IA. Toujours distinguer faits documentés, chiffres déclarés et objectifs.
@@ -25,7 +25,7 @@ Prestations : conception, personnalisation et animation, préparation aux examen
 
 **Examens :** inclusion des vouchers selon formation et conditions ; à préciser sur chaque devis.
 **Financement :** OPCO à étudier selon l'organisme contractant et l'éligibilité. CPF et Qualiopi à n'annoncer qu'après vérification.
-**Tarifs (TJM, forfaits) :** [À COMPLÉTER]
+**Tarifs :** TJM sous-traitance **700 €** (HT à confirmer). Forfaits intra/inter : [À COMPLÉTER]
 
 ## Target Audience
 **Target companies:**
@@ -227,7 +227,7 @@ MED TRAINING & CONSULTING accompagne les organismes de formation, ESN, cabinets 
 | 93 % de réussite | Préciser période, certifications concernées et méthode de calcul |
 | ATP / ATO / SAFe SPC | Distinguer certifications individuelles et accréditations détenues en direct ou via partenaire |
 | CPF / OPCO / Qualiopi | Confirmer les dispositifs réellement accessibles |
-| Tarifs | Ajouter TJM de sous-traitance et forfaits intra/inter |
+| Tarifs | TJM 700 € renseigné ; ajouter forfaits intra/inter |
 | Références clients | Vérifier l'autorisation d'utiliser les noms |
 
 ## Learnings
@@ -247,5 +247,6 @@ MED TRAINING & CONSULTING accompagne les organismes de formation, ESN, cabinets 
 
 ## Changelog
 *Newest first. One line per revision: what changed and why.*
+- v3 (2026-11-11) — Added subcontracting day rate (TJM 700 €) to Business model.
 - v2 (2026-11-11) — Completed by the owner: company name, catalogue, 3 business models, personas, competitors, pedagogy, objections, customer language, brand voice, proof points (Trustpilot, declared metrics, references), goals, KPIs, positioning statement and items to verify before public use.
 - v1 (2026-11-11) — Initial context, drafted from the trainer's profile; gaps marked [À COMPLÉTER].
