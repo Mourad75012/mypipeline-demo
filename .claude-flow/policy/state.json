@@ -125,10 +125,50 @@
         "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
       },
       "hash": "sha256:1293ebaf1a3dae7b74d86d2a323b0f04898454d907210dd5fb672e3d7f51b0fa"
+    },
+    {
+      "payload": {
+        "receiptId": "sha256:8151ffc5ca2f7f6a38076b365903a519003426c998bb176d25b8a66c7c2833b1",
+        "previousReceiptHash": "sha256:1293ebaf1a3dae7b74d86d2a323b0f04898454d907210dd5fb672e3d7f51b0fa",
+        "sequence": 3,
+        "issuedAt": 1794408216044,
+        "request": {
+          "identity": {
+            "id": "legacy-cli",
+            "type": "legacy"
+          },
+          "action": {
+            "type": "mcp.tool.call",
+            "resource": "hooks_intelligence_verified-ingest",
+            "tool": "hooks_intelligence_verified-ingest",
+            "server": "ruflo",
+            "network": false,
+            "destructive": false
+          },
+          "context": {
+            "metadata": {
+              "inputDigest": "sha256:b72ed13cb525af2592de7b88e763277fa14592edc468666510c59a8cf02dd505"
+            },
+            "now": 1794408216044
+          },
+          "requestId": "43bbb594-7e91-4119-b5ab-2848a471b242"
+        },
+        "decision": {
+          "requestId": "43bbb594-7e91-4119-b5ab-2848a471b242",
+          "outcome": "allowed",
+          "enforcedOutcome": "allowed",
+          "mode": "legacy",
+          "reason": "legacy-default-allow",
+          "matchedRules": [],
+          "obligations": []
+        },
+        "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
+      },
+      "hash": "sha256:a6b623de7d21570c1dfd093db38a474cab3bca0ef0dddda26d63f1a509938e5c"
     }
   ],
   "migratedAt": 1794335628721,
   "migratedFrom": "pre-ADR-324; capabilities=.swarm/memory.db",
-  "ledgerLength": 3,
-  "ledgerHead": "sha256:1293ebaf1a3dae7b74d86d2a323b0f04898454d907210dd5fb672e3d7f51b0fa"
+  "ledgerLength": 4,
+  "ledgerHead": "sha256:a6b623de7d21570c1dfd093db38a474cab3bca0ef0dddda26d63f1a509938e5c"
 }
