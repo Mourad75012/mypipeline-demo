@@ -154,7 +154,7 @@ Déroulé : J1 visite du profil + vrai commentaire sur un post récent ; J2-3 in
 | Campagne « Juniors & SM/PO non certifiés · IDF · Week-end » | 49933 | Active (créée dans l'interface) ; liste 70746 (38 contacts) ; « certification garantie » remplacé par « préparation complète jusqu'à l'examen », accréditation corrigée en « ATO PeopleCert » (2026-11-12) |
 | Ancienne campagne ESN | 49856 | Supprimée le 2026-11-12 |
 | Campagne « Organismes de formation · Sous-traitance » | 49905 | Inactive ; revue manuelle des leads ; fr-FR ; liste 70700 |
-| Agent de sourcing « Organismes de formation · FR-BE-CH » | 44527 | Actif ; alimente la liste 70700 ; partenaires (M2i, QRP, Sparks, ACTINUUM, Simplilearn, Next Formation) exclus ; page M2i retirée des signaux |
+| Agent de sourcing « Organismes de formation · FR-BE-CH » | 44527 | Actif ; alimente la liste 70700 ; salariés de M2i, QRP, Sparks, ACTINUUM, Simplilearn, Next Formation et Elitek exclus ; pages concurrentes suivies : M2i, Oo2, SAM, Elitek, PLB Consultant (2026-11-12) |
 | Liste « Head of Learning… France » | 70627 | Détachée de toute campagne (cible trop large, hors France) ; re-rattachée par erreur puis détachée à nouveau le 2026-11-12 |
 | Boîte email | 12605 | Gmail, chauffe en cours, 2 emails/jour |
 
