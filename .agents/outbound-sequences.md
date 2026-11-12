@@ -150,11 +150,12 @@ Déroulé : J1 visite du profil + vrai commentaire sur un post récent ; J2-3 in
 ## Configuration Gojiberry (2026-11-11)
 | Élément | ID | État |
 |---------|----|------|
-| Campagne « ESN & Grands comptes · Intra · v2 » | 49912 | En pause ; lancement programmé le lundi 2026-11-16 (avant 9 h) ; fr-FR ; messages et objets fixes ; liste 70659 (74 contacts) |
-| Ancienne campagne « ESN & Grands comptes · Responsables formation (intra) » | 49856 | En pause, sans liste (remplacée par 49912 : l'API ne permettait pas d'enregistrer les objets d'email) |
+| Campagne « ESN & Grands comptes · Intra · v2 » | 49912 | **Active** (réactivée dans l'interface le 2026-11-11) ; fr-FR ; messages et objets fixes ; liste 70659 (74 contacts) |
+| Campagne « Juniors & SM/PO non certifiés · IDF · Week-end » | 49933 | Active (créée dans l'interface) ; liste 70746 (38 contacts) ; « certification garantie » remplacé par « préparation complète jusqu'à l'examen », accréditation corrigée en « ATO PeopleCert » (2026-11-12) |
+| Ancienne campagne ESN | 49856 | Supprimée le 2026-11-12 |
 | Campagne « Organismes de formation · Sous-traitance » | 49905 | Inactive ; revue manuelle des leads ; fr-FR ; liste 70700 |
 | Agent de sourcing « Organismes de formation · FR-BE-CH » | 44527 | Actif ; alimente la liste 70700 ; partenaires (M2i, QRP, Sparks, ACTINUUM, Simplilearn, Next Formation) exclus ; page M2i retirée des signaux |
-| Liste « Head of Learning… France » | 70627 | Détachée de toute campagne (cible trop large, hors France) |
+| Liste « Head of Learning… France » | 70627 | Détachée de toute campagne (cible trop large, hors France) ; re-rattachée par erreur puis détachée à nouveau le 2026-11-12 |
 | Boîte email | 12605 | Gmail, chauffe en cours, 2 emails/jour |
 
 À faire dans l'interface Gojiberry : désactiver le suivi des ouvertures sur la boîte 12605.
