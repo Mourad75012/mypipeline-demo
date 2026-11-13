@@ -165,3 +165,6 @@ Déroulé : J1 visite du profil + vrai commentaire sur un post récent ; J2-3 in
 2. Rechercher les prospects (responsables pédagogiques OF, responsables formation ESN) — recherche gratuite, révélation avec accord.
 3. Créer les campagnes 3a et 3b dans Gojiberry ; activation uniquement après validation.
 4. Après ~100 contacts par séquence, consigner les taux de réponse dans la section Learnings de `product-marketing.md`.
+
+## Journal
+- 2026-11-13 — Leads OF : 8 validés (ACP Formation, SKOLAE, OrdiFormation, CESI, IMT Atlantique, IGENSIA, SGC Formation, Mon École de Formation), 11 rejetés pour secteur hors cible (social, coiffure, optique, jeu-jouet, BTP, QHSE, transport, communication, interculturel), 5 en attente (Cefi, 360 Compétences, Back To School Academy, AFPA Brest, SOCOTEC Formation). Agent 44527 : secteur « Education » retiré, « IT Services and IT Consulting » ajouté ; pas de mots-clés obligatoires (règle ET trop restrictive).
