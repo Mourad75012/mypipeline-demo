@@ -13,7 +13,7 @@ Toujours remplacer `{signal}` par un élément réel ; sinon supprimer la phrase
 >
 > Bonjour {prenom},
 > {signal}
-> J'anime en sous-traitance des formations certifiantes (PMP, PRINCE2 v7, ITIL 4, SAFe, PSM, ISTQB), en présentiel ou à distance, en français et en anglais.
+> J'anime en sous-traitance des formations certifiantes (PMP, PRINCE2 v7, ITIL 4, SAFe, PSM, ISTQB), en présentiel ou à distance, en français et en anglais, avec 93 % de réussite aux examens.
 > Cela vous permettrait d'ouvrir ou de renforcer ces sessions sans recruter.
 > Seriez-vous ouvert à un échange de 15 minutes la semaine prochaine ?
 >
@@ -43,7 +43,7 @@ Toujours remplacer `{signal}` par un élément réel ; sinon supprimer la phrase
 
 ## IND — Consultants, juniors, seniors, reconversion (LinkedIn uniquement)
 
-> Bonjour {prenom}, j'ai vu votre intérêt pour {certif}. J'anime des sessions de préparation avec un accompagnement personnalisé jusqu'à l'examen. Voulez-vous que je vous envoie le programme et les dates ?
+> Bonjour {prenom}, j'ai vu votre intérêt pour {certif}. J'anime des sessions de préparation avec un accompagnement personnalisé jusqu'à l'examen (93 % de réussite). Voulez-vous que je vous envoie le programme et les dates ?
 
 ## Relances
 

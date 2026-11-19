@@ -12,7 +12,9 @@ Formations certifiantes : PMP, CAPM, PMI-ACP, CPMAI, PgMP · PSM, PSPO, PSK, PSD
 SAFe SA, RTE, POPM, LPM · PRINCE2 v7, PRINCE2 Agile · ITIL 4, ITIL 5 ·
 ISTQB Fondation / Agile / Automation · DevOps (PeopleCert) · Jira (Atlassian).
 
-Ne jamais inventer de taux de réussite, de références clients, de prix ou de dates de session.
+Taux de réussite aux examens (donnée fournie par le formateur) : **93 %**.
+
+Ne jamais inventer d'autres chiffres, de références clients, de prix ou de dates de session.
 Si une donnée manque, laisser un champ `[À COMPLÉTER]`.
 
 ## 2. Segments cibles (ICP)
